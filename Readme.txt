@@ -1,2 +1,3 @@
 Hello, World!!!
-It`s me.
+It`s me. 
+Правка 3
