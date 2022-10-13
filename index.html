@@ -7,22 +7,13 @@
   <title>Vite App Welcome</title>
   <link type="text/css" rel="stylesheet" href="./style.css">
 </head>
-<body class="bg-slate-500">
-<article class="flex flex-col w-96 bg-hero-pattern p-6 mx-auto rounded-lg mt-12">
-  <header class="flex flex-row justify-between items-center">
-    <span class="px-4 py-4 bg-red-500 rounded-md" style="content: url('https://api.iconify.design/fa-brands/tiktok.svg?color=white&height=30') ">icon</span>
-    <div class="px-4 py-1 text-slate-200 text-xs font-bold rounded-2xl h-full">13 Aug 2019</div>
-  </header>
-  <main class="flex flex-col pt-12">
-    <section class="flex flex-col">
-      <div class="text-xs text-neutral-400">Winner</div>
-      <div class="text-2xl text-zinc-100 font-bold mt-3">Best Music Album</div>
-      <div class="text-2xl text-zinc-100 font-bold mt-1">2018-19</div>
-    </section>
-  </main>
-  <footer class="pt-24 pb-5 text-neutral-400 text-xs">
-    Mumbai, India
-  </footer>
-</article>
+
+<body>
+<div id="app">
+  <input id="inpTodoTitle" />
+  <button id="btnCreateTodo">Create</button>
+  <ol id="listOfTodos"></ol>
+</div>
+<script src="main.js"></script>
 </body>
 </html>

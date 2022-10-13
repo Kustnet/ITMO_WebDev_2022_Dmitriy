@@ -1,23 +1,60 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import { setupCounter } from './counter.js'
+const domInpTodoTitle = document.getElementById("inpTodoTitle");
+const domBtnCreateTodo = document.getElementById("btnCreateTodo");
+const domListOfTodos = document.getElementById("listOfTodos");
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+domBtnCreateTodo.addEventListener("click", onBtnCreateTodoClick);
 
-setupCounter(document.querySelector('#counter'))
+class TodoVO {
+    constructor(id, title, date = new Date()) {
+        this.id = id;
+        this.title = title;
+        this.date = date;
+        this.isCompleted = false;
+    }
+}
+
+const listOfTodos = [];
+
+function onBtnCreateTodoClick(event) {
+    console.log("> domBtnCreateTodo -> handle(click)", event);
+    const todoTitleValueFromDomInput = domInpTodoTitle.value;
+    console.log("> domBtnCreateTodo -> todoInputTitleValue:", todoTitleValueFromDomInput);
+
+    console.log("> domBtnCreateTodo -> isInputValueNotNumber");
+
+    const canCreateTodo = validateTodoInputTitleValue(todoTitleValueFromDomInput);
+
+    if (canCreateTodo) {
+        console.log("> domBtnCreateTodo -> canCreateTodo");
+
+    const todoVO = createTodoVO(todoTitleValueFromDomInput);
+
+    listOfTodos.push(todoVO);
+    let output = "";
+    for (let index in listOfTodos) {
+        output += `<li>${listOfTodos[index].title}</li>`;
+    }
+    domListOfTodos.innerHTML = output;
+}
+
+    function validateTodoInputTitleValue (value) {
+        const isInputValueString = typeof value === 'string';
+        const isInputValueNotNumber = isNaN(parseInt(value));
+        const result =
+            isInputValueString
+            &&  isInputValueNotNumber
+            &&  value.length > 0;
+
+        console.log('> validateTodoInputTitleValue ->result', {
+            result,
+            isInputValueString,
+            isInputValueNotNumber
+        });
+        return result;
+    }
+    function createTodoVO(title) {
+        const todoId = Date.now().toString();
+        const todoVO = new TodoVO(todoId, title);
+        return todoVO
+
+    }}
