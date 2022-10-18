@@ -1,4 +1,8 @@
 class TodoVO {
+  static createTodoVO(title) {
+    const todoId = Date.now().toString();
+    return new TodoVO(todoId, title);
+  }
   constructor(id, title, date = new Date()) {
     this.id = id;
     this.title = title;
