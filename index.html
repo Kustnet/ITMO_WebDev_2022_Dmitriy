@@ -7,39 +7,50 @@
     <title>Intro HTML</title>
   </head>
   <body>
-  <div id="app"></div>
-  <h1 align="center">Заголовок</h1>
-  <p align="center"><b> Ну, понеслась.</b></p>
-  <p><strong> Тут находиться </strong>какой-то бесполезный текст,
+  <div style=margin-left:80px;>
+    <div id="app"></div>
+      <h1 align="center"><b>Ну, понеслась.</b></h1>
+      <h2 align="center">Заголовок</h2>
+      <h3 align="center">Заголовок</h3>
+      <h4 align="center">Заголовок</h4>
+      <h5 align="center">Заголовок</h5>
+      <h6 align="center">Заголовок</h6>
+    <p><strong> Тут находиться </strong>какой-то бесполезный текст,
     <i>	нужный только для того,</i> <u> что бы видеть, как
-      я научился пользоваться <i><strong>тегами.</i></strong></u></p>
-  <h2 align="center">Списки</h2>
-  <ul>
-    <li>Белка</li>
-    <li>Стрелка</li>
-    <li>Палка</li>
-    <li>Морж</li>
-  </ul>
-  <ol>
-    <li>Грелка</li>
-    <li>Тарелка</li>
-    <li>Галка</li>
-    <li>Еж</li>
-  </ol>
-  <h3 align="center">Поля ввода</h3>
+      я научился пользоваться <i><strong>тегами.</strong></i></u></p>
+  <h1 align="center">Списки</h1>
+      <ul>
+        <li>Белка</li>
+        <li>Стрелка</li>
+        <li>Палка</li>
+        <li>Морж</li>
+      </ul>
+      <ol>
+        <li>Грелка</li>
+        <li>Тарелка</li>
+        <li>Галка</li>
+        <li>Еж</li>
+      </ol>
+  <h1 align="center">Поля ввода</h1>
   <form action="mailto:kust-net@mail.ru" enctype="text/plain>
 			E-mail:<input type="text" size="40"> <br>
+    <br>
   Что-то очень важное:<input type="email"> <br>
+    <br>
   Пароль:<input type="password"> <br>
+    <br>
   Дата:<input type="date"><br>
-  Поставь галочку еслы ты не обезьяна<input type="checkbox">
-  <p><b>В чем смысл жизни?</b></p>
-  <p><input type="radio"> 32</p>
+    <br>
+  Поставь галочку еслы ты не обезьяна<input type="checkbox"><br>
+    <br>
+    <br>
+  <p><b>Ответ на главный вопрос жизни, вселенной и всего такого.</b></p>
+  <p><input type="radio"> 42</p>
   <p><input type="radio"> Да</p>
   <p><input type="radio"> Да,но нет</p>
-  </form>
+  </form><br>
   <button onclick="alert('Вы нажали на кнопку')">Кнопка</button>
-  <h4 align="center">Таблица</h4>
+  <h1 align="center">Таблица</h1>
   <table border="2" bordercolor="#ff5200">
     <tr>
       <td colspan="2">Ячейка 1</td>
@@ -61,7 +72,9 @@
       <td>Текст</td>
     </tr>
   </table>
-  <h5 align="center">Выпадающий список</h5>
+  <h1 align="center">Выпадающий список</h1>
+    <br>
+    <br>
   Выбери:
   <select>
     <option>Первый</option>
@@ -70,12 +83,14 @@
     <option>Четвертый</option>
     <option>Пятый</option>
   </select>
-  <h6 align="center">Картинка</h6>
+    <br>
+    <br>
+  <h1 align="center">Картинка</h1>
   <img src="https://ruwest.ru/
 		upload/iblock/5f5/5f54372872372
 		c07dc289cc8cd512090.jpg" alt="Тут должна быть картинка"
        height="250">
-  <h6 align="center">Векторная графика</h6>
+  <h1 align="center">Векторная графика</h1>
   <svg
           xmlns="http://www.w3.org/2000/svg"
           fill-rule="evenodd"
@@ -89,5 +104,6 @@
   </svg>
     <div id="app"></div>
     <script type="module" src="/main.js"></script>
+  </div>
   </body>
 </html>
