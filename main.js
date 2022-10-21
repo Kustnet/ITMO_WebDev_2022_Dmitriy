@@ -15,6 +15,9 @@ domListOfTodos.addEventListener('change', onTodoListChange);
 
 const LOCAL_LIST_OF_TODOS = 'listOfTodos';
 
+const Text_Input = 'TextInput';
+domInpTodoTitle.value = localStorage.getItem(Text_Input);
+
 const listOfTodos = localStorageListOf(LOCAL_LIST_OF_TODOS);
 
 console.log('> Initial value -> listOfTodos', listOfTodos);
@@ -45,6 +48,7 @@ function onBtnCreateTodoClick() {
     localStorageSaveListOfWithKey(LOCAL_LIST_OF_TODOS, listOfTodos);
     renderTodoListInContainer(listOfTodos, domListOfTodos);
     domInpTodoTitle.value = '';
+    localStorage.removeItem(Text_Input);
   }
 }
 
@@ -52,10 +56,16 @@ function onInpTodoTitleKeyup(event) {
   // console.log('> onInpTodoTitleKeyup:', event);
   const inputValue = event.currentTarget.value;
   // console.log('> onInpTodoTitleKeyup:', inputValue);
-  disableButtonWhenTextInvalid(domBtnCreateTodo, inputValue, isStringNotNumberAndNotEmpty, {
-    textWhenEnabled: 'Create',
-    textWhenDisabled: 'Enter text',
-  });
+  disableButtonWhenTextInvalid(
+    domBtnCreateTodo,
+    inputValue,
+    isStringNotNumberAndNotEmpty,
+    localStorage.setItem(Text_Input, inputValue),
+    {
+      textWhenEnabled: 'Create',
+      textWhenDisabled: 'Enter text',
+    }
+  );
 }
 
 function renderTodoListInContainer(listOfTodoVO, container) {
