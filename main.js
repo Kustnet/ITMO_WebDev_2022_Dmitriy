@@ -43,15 +43,17 @@ function onBtnCreateTodoClick() {
   const todoTitleValueFromDomInput = domInpTodoTitle.value;
   // console.log('> domBtnCreateTodo -> todoInputTitleValue:', todoTitleValueFromDomInput);
   if (isStringNotNumberAndNotEmpty(todoTitleValueFromDomInput)) {
-    listOfTodos.push(TodoVO.createFromTitle(todoTitleValueFromDomInput));
+    createTodoFromTextAndToList(todoTitleValueFromDomInput, listOfTodos);
     saveListOfToDo();
     localStorageSaveListOfWithKey(LOCAL_LIST_OF_TODOS, listOfTodos);
     renderTodoListInContainer(listOfTodos, domListOfTodos);
-    domInpTodoTitle.value = '';
-    localStorage.removeItem(Text_Input);
+    clearInputTextAndLocalStorage();
+    disableOrEnableCreateTodoButtonOnTodoInputTitle();
   }
 }
-
+function disableOrEnableCreateTodoButtonOnTodoInputTitle() {
+  disableButtonWhenTextInvalid(domBtnCreateTodo, domInpTodoTitle.value, isStringNotNumberAndNotEmpty);
+}
 function onInpTodoTitleKeyup(event) {
   // console.log('> onInpTodoTitleKeyup:', event);
   const inputValue = event.currentTarget.value;
@@ -66,6 +68,7 @@ function onInpTodoTitleKeyup(event) {
       textWhenDisabled: 'Enter text',
     }
   );
+  disableOrEnableCreateTodoButtonOnTodoInputTitle();
 }
 
 function renderTodoListInContainer(listOfTodoVO, container) {
@@ -81,4 +84,12 @@ function renderTodoListInContainer(listOfTodoVO, container) {
 
 function saveListOfToDo() {
   localStorageSaveListOfWithKey(LOCAL_LIST_OF_TODOS, listOfTodos);
+}
+
+function clearInputTextAndLocalStorage() {
+  domInpTodoTitle.value = '';
+  localStorage.removeItem(Text_Input);
+}
+function createTodoFromTextAndToList(text, list) {
+  list.push(TodoVO.createFromTitle(text));
 }
