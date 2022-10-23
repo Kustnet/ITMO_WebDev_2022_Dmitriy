@@ -7,18 +7,23 @@
     <title>Intro HTML</title>
   </head>
   <body>
-  <div style=margin-left:80px;>
-    <div id="app"></div>
+    <div style="margin-left: 80px">
+      <div id="app"></div>
       <h1 align="center"><b>Ну, понеслась.</b></h1>
       <h2 align="center">Заголовок</h2>
       <h3 align="center">Заголовок</h3>
       <h4 align="center">Заголовок</h4>
       <h5 align="center">Заголовок</h5>
       <h6 align="center">Заголовок</h6>
-    <p><strong> Тут находиться </strong>какой-то бесполезный текст,
-    <i>	нужный только для того,</i> <u> что бы видеть, как
-      я научился пользоваться <i><strong>тегами.</strong></i></u></p>
-  <h1 align="center">Списки</h1>
+      <p>
+        <strong> Тут находиться </strong>какой-то бесполезный текст,
+        <i> нужный только для того,</i>
+        <u>
+          что бы видеть, как я научился пользоваться
+          <i><strong>тегами.</strong></i></u
+        >
+      </p>
+      <h1 align="center">Списки</h1>
       <ul>
         <li>Белка</li>
         <li>Стрелка</li>
@@ -31,79 +36,84 @@
         <li>Галка</li>
         <li>Еж</li>
       </ol>
-  <h1 align="center">Поля ввода</h1>
-  <form action="mailto:kust-net@mail.ru" enctype="text/plain>
-			E-mail:<input type="text" size="40"> <br>
-    <br>
-  Что-то очень важное:<input type="email"> <br>
-    <br>
-  Пароль:<input type="password"> <br>
-    <br>
-  Дата:<input type="date"><br>
-    <br>
-  Поставь галочку еслы ты не обезьяна<input type="checkbox"><br>
-    <br>
-    <br>
-  <p><b>Ответ на главный вопрос жизни, вселенной и всего такого.</b></p>
-  <p><input type="radio"> 42</p>
-  <p><input type="radio"> Да</p>
-  <p><input type="radio"> Да,но нет</p>
-  </form><br>
-  <button onclick="alert('Вы нажали на кнопку')">Кнопка</button>
-  <h1 align="center">Таблица</h1>
-  <table border="2" bordercolor="#ff5200">
-    <tr>
-      <td colspan="2">Ячейка 1</td>
-      <td>Ячейка 2</td>
-    </tr>
-    <tr>
-      <td>Текст</td>
-      <td>Текст</td>
-      <td>Текст</td>
-    </tr>
-    <tr>
-      <td>Текст</td>
-      <td>Текст</td>
-      <td>Текст</td>
-    </tr>
-    <tr>
-      <td>Текст</td>
-      <td>Текст</td>
-      <td>Текст</td>
-    </tr>
-  </table>
-  <h1 align="center">Выпадающий список</h1>
-    <br>
-    <br>
-  Выбери:
-  <select>
-    <option>Первый</option>
-    <option>Второй</option>
-    <option>Третий</option>
-    <option>Четвертый</option>
-    <option>Пятый</option>
-  </select>
-    <br>
-    <br>
-  <h1 align="center">Картинка</h1>
-  <img src="https://ruwest.ru/
+      <h1 align="center">Поля ввода</h1>
+
+      E-mail: <input type="email" /> <br />
+      <br />
+      Что-то очень важное:<input type="email" /> <br />
+      <br />
+      Пароль:<input type="password" /> <br />
+      <br />
+      Дата:<input type="date" /><br />
+      <br />
+      Поставь галочку еслы ты не обезьяна<input type="checkbox" /><br />
+      <br />
+      <br />
+      <p><b>Ответ на главный вопрос жизни, вселенной и всего такого.</b></p>
+      <p><input type="radio" /> 42</p>
+      <p><input type="radio" /> Да</p>
+      <p><input type="radio" /> Да,но нет</p>
+      <br />
+      <button onclick="alert('Вы нажали на кнопку')">Кнопка</button>
+      <h1 align="center">Таблица</h1>
+      <table border="2" bordercolor="#ff5200">
+        <tr>
+          <td colspan="2">Ячейка 1</td>
+          <td>Ячейка 2</td>
+        </tr>
+        <tr>
+          <td>Текст</td>
+          <td>Текст</td>
+          <td>Текст</td>
+        </tr>
+        <tr>
+          <td>Текст</td>
+          <td>Текст</td>
+          <td>Текст</td>
+        </tr>
+        <tr>
+          <td>Текст</td>
+          <td>Текст</td>
+          <td>Текст</td>
+        </tr>
+      </table>
+      <h1 align="center">Выпадающий список</h1>
+      <br />
+      <br />
+      Выбери:
+      <select>
+        <option>Первый</option>
+        <option>Второй</option>
+        <option>Третий</option>
+        <option>Четвертый</option>
+        <option>Пятый</option>
+      </select>
+      <br />
+      <br />
+      <h1 align="center">Картинка</h1>
+      <img
+        src="https://ruwest.ru/
 		upload/iblock/5f5/5f54372872372
-		c07dc289cc8cd512090.jpg" alt="Тут должна быть картинка"
-       height="250">
-  <h1 align="center">Векторная графика</h1>
-  <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          viewBox="0 9 25 8">
-    <path
-            d="M16 12a3.001 3.001 0 016 0 3.001 3.001 0 01-6 0zm1 0a2 2 0
+		c07dc289cc8cd512090.jpg"
+        alt="Тут должна быть картинка"
+        height="250"
+      />
+      <h1 align="center">Векторная графика</h1>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        viewBox="0 9 25 8"
+      >
+        <path
+          d="M16 12a3.001 3.001 0 016 0 3.001 3.001 0 01-6 0zm1 0a2 2 0
 				114.001.001A2 2 0 0117 12zm-8 0a3.001 3.001 0 016 0 3.001 3.001 0
 				01-6 0zm1 0a2 2 0 114.001.001A2 2 0 0110 12zm-8 0a3.001 3.001 0 016
-				0 3.001 3.001 0 01-6 0zm1 0a2 2 0 114.001.001A2 2 0 013 12z"/>
-  </svg>
-    <div id="app"></div>
-    <script type="module" src="/main.js"></script>
-  </div>
+				0 3.001 3.001 0 01-6 0zm1 0a2 2 0 114.001.001A2 2 0 013 12z"
+        />
+      </svg>
+      <div></div>
+      <script type="module" src="/main.js"></script>
+    </div>
   </body>
 </html>
