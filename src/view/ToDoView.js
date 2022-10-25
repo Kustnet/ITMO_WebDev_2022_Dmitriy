@@ -1,10 +1,16 @@
-class ToDoView {
-  static createSimpleViewFromVO(index, input) {
-    const checked = input.isCompleted ? 'checked' : '';
+class TodoView {
+  static TODO_VIEW_ITEM = 'todoItem';
+  static createSimpleViewFromVO(index, vo) {
+    const checked = vo.isCompleted ? 'checked' : '';
+    console.log('> TodoView -> createSimpleViewFromVO: checked =', checked);
     return `
-      <li>
-        <input type="checkbox" name="" id="${index}" ${checked}>${input.title}
-        </li>`;
+     <li data-type="${TodoView.TODO_VIEW_ITEM}" id="${vo.id}">
+      <input 
+        type="checkbox" 
+        id="${index}"
+        ${checked}
+      >${vo.title};
+    </li>`;
   }
 }
-export default ToDoView;
+export default TodoView;

@@ -12,6 +12,29 @@ const domListOfTodos = document.getElementById('listOfTodos');
 domBtnCreateTodo.addEventListener('click', onBtnCreateTodoClick);
 domInpTodoTitle.addEventListener('keyup', onInpTodoTitleKeyup);
 domListOfTodos.addEventListener('change', onTodoListChange);
+domListOfTodos.addEventListener('click', onTodoListItemClick);
+
+let selectedTodoVO = null;
+
+function onTodoListItemClick(event) {
+  const domEement = event.target;
+
+  const isSelected = domEement.style.backgroundColor;
+
+  const SELECTED_ITEM_BACKGROUND_KEY = 'red';
+
+  const todoID = domEement.id;
+  const todoVO = listOfTodos.find((vo) => vo.id === todoID);
+
+  if (domEement.dataset['type'] !== ToDoView.TODO_VIEW_ITEM) return;
+  if (isSelected === SELECTED_ITEM_BACKGROUND_KEY) {
+    domEement.style.backgroundColor = '';
+    domInpTodoTitle.value = '';
+  } else {
+    domInpTodoTitle.value = todoVO.title;
+    domEement.style.backgroundColor = SELECTED_ITEM_BACKGROUND_KEY;
+  }
+}
 
 const LOCAL_LIST_OF_TODOS = 'listOfTodos';
 
