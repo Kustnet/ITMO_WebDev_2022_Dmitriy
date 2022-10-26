@@ -4,16 +4,23 @@
     <meta charset="UTF-8" />
     <link href="/vite.svg" rel="icon" type="image/svg+xml" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Vite App Welcome</title>
+    <title>Your Name</title>
     <link type="text/css" rel="stylesheet" href="./style.css" />
   </head>
 
   <body>
     <div id="app">
-      <input id="inpTodoTitle" />
-      <button id="btnCreateTodo">Create</button>
-      <ol id="listOfTodos"></ol>
+      <strong>Your First name:</strong>
+      <input type="text" style="margin: 15px; background-color: #7fffd4" class="inpFirstName" />
+      <br />
+      <strong>Your Last Name:</strong>
+      <input type="text" style="margin: 15px; background-color: #66cdaa" class="inpLastName" /><br />
+      <div style="display: inline-block; margin-top: 15px">
+        <strong>Your Full Name:</strong>
+        <div class="FName" style="display: inline-block" id="FirstName"></div>
+        <div class="LName" style="display: inline-block" id="LastName"></div>
+      </div>
     </div>
-    <script type="module" src="main.js"></script>
+    <script type="module" src="Main(Homework).js"></script>
   </body>
 </html>
