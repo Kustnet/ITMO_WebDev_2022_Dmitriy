@@ -1,95 +1,80 @@
-import TodoVO from './src/model/vos/TodoVO.js';
-import { disableButtonWhenTextInvalid } from './src/utils/domUtils.js';
-import { isStringNotNumberAndNotEmpty } from './src/utils/stringUtils.js';
-import { localStorageListOf, localStorageSaveListOfWithKey } from './src/utils/dataBaseUtils.js';
-import ToDoView from './src/view/ToDoView.js';
-import todoVO from './src/model/vos/TodoVO.js';
+const canvas = document.createElement('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+canvas.style.backgroundColor = '#f1f1f1';
+document.getElementById('app').append(canvas);
 
-const domInpTodoTitle = document.getElementById('inpTodoTitle');
-const domBtnCreateTodo = document.getElementById('btnCreateTodo');
-const domListOfTodos = document.getElementById('listOfTodos');
-
-domBtnCreateTodo.addEventListener('click', onBtnCreateTodoClick);
-domInpTodoTitle.addEventListener('keyup', onInpTodoTitleKeyup);
-domListOfTodos.addEventListener('change', onTodoListChange);
-
-const LOCAL_LIST_OF_TODOS = 'listOfTodos';
-
-const Text_Input = 'TextInput';
-domInpTodoTitle.value = localStorage.getItem(Text_Input);
-
-const listOfTodos = localStorageListOf(LOCAL_LIST_OF_TODOS);
-
-console.log('> Initial value -> listOfTodos', listOfTodos);
-
-renderTodoListInContainer(listOfTodos, domListOfTodos);
-disableButtonWhenTextInvalid(domBtnCreateTodo, domInpTodoTitle.value, isStringNotNumberAndNotEmpty);
-
-function onTodoListChange(event) {
-  console.log('>onTodoListChange -> event:', event.target);
-  const target = event.target;
-  const index = target.id;
-  if (index && typeof index === 'string') {
-    const indexInt = parseInt(index.trim());
-    const todoVO = listOfTodos[index];
-    console.log('>onTodoListChange -> todoVO:', indexInt, todoVO);
-    todoVO.isCompleted = target.checked;
-    saveListOfToDo();
+var ctx = canvas.getContext('2d');
+class Position {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
   }
 }
 
-function onBtnCreateTodoClick() {
-  // console.log('> domBtnCreateTodo -> handle(click)', event);
-  const todoTitleValueFromDomInput = domInpTodoTitle.value;
-  // console.log('> domBtnCreateTodo -> todoInputTitleValue:', todoTitleValueFromDomInput);
-  if (isStringNotNumberAndNotEmpty(todoTitleValueFromDomInput)) {
-    createTodoFromTextAndToList(todoTitleValueFromDomInput, listOfTodos);
-    saveListOfToDo();
-    localStorageSaveListOfWithKey(LOCAL_LIST_OF_TODOS, listOfTodos);
-    renderTodoListInContainer(listOfTodos, domListOfTodos);
-    clearInputTextAndLocalStorage();
-    disableOrEnableCreateTodoButtonOnTodoInputTitle();
+class Planet {
+  constructor(color, autmospher, position, size) {
+    this.color = color;
+    this.autmospher = autmospher;
+    this.position = position;
+    this.size = size;
+  }
+  render(ctx) {
+    ctx.fillStyle = this.color;
+    ctx.strokeStyle = this.autmospher;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(this.position.x, this.position.y, this.size, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
   }
 }
-function disableOrEnableCreateTodoButtonOnTodoInputTitle() {
-  disableButtonWhenTextInvalid(domBtnCreateTodo, domInpTodoTitle.value, isStringNotNumberAndNotEmpty);
+
+class Earth extends Planet {
+  constructor(position) {
+    super('green', 'blue', position, 40);
+  }
 }
-function onInpTodoTitleKeyup(event) {
-  // console.log('> onInpTodoTitleKeyup:', event);
-  const inputValue = event.currentTarget.value;
-  // console.log('> onInpTodoTitleKeyup:', inputValue);
-  disableButtonWhenTextInvalid(
-    domBtnCreateTodo,
-    inputValue,
-    isStringNotNumberAndNotEmpty,
-    localStorage.setItem(Text_Input, inputValue),
-    {
-      textWhenEnabled: 'Create',
-      textWhenDisabled: 'Enter text',
-    }
+
+class Sun extends Planet {
+  constructor(position) {
+    super('red', 'yellow', position, 100);
+  }
+}
+
+// const sun = {
+//   color: 'red',
+//   autmospher: 'blue',
+//   x: 100,
+//   y: 100,
+//   size: 60,
+// };
+
+const sun = new Sun(new Position(canvas.width / 2, canvas.height / 2), 100);
+const earth = new Earth(placePlanetRelativeToSun(sun, 10, 40), 40);
+// function drowPlanet(planet) {
+//   ctx.fillStyle = planet.color;
+//   ctx.strokeStyle = planet.autmospher;
+//   ctx.lineWidth = 2;
+//   ctx.beginPath();
+//   ctx.arc(planet.x, planet.y, planet.size, 0, 2 * Math.PI);
+//   ctx.fill();
+//   ctx.stroke();
+// }
+function placePlanetRelativeToSun(planet, offset, radius) {
+  return new Position(
+    planet.position.x + planet.size + offset + radius,
+    planet.position.y + planet.size + offset + radius
   );
-  disableOrEnableCreateTodoButtonOnTodoInputTitle();
 }
-
-function renderTodoListInContainer(listOfTodoVO, container) {
-  let output = '';
-  let todoVO;
-  for (let index in listOfTodoVO) {
-    todoVO = listOfTodoVO[index];
-    output += ToDoView.createSimpleViewFromVO(index, todoVO);
-  }
-  document.createElement('div');
-  container.innerHTML = output;
-}
-
-function saveListOfToDo() {
-  localStorageSaveListOfWithKey(LOCAL_LIST_OF_TODOS, listOfTodos);
-}
-
-function clearInputTextAndLocalStorage() {
-  domInpTodoTitle.value = '';
-  localStorage.removeItem(Text_Input);
-}
-function createTodoFromTextAndToList(text, list) {
-  list.push(TodoVO.createFromTitle(text));
-}
+let alpha = 0;
+sun.render(ctx);
+// earth.render(ctx);
+setInterval(() => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const offsetPosition = (earth.position.x = 100 * Math.sin(alpha) + sun.position.x);
+  earth.position.y = 100 * Math.cos(alpha) + sun.position.y;
+  earth.render(ctx);
+  alpha += 1 / Math.PI;
+  if (alpha >= 2 * Math.PI) alpha = 0;
+}, 100);
