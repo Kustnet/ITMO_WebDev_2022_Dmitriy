@@ -20,6 +20,23 @@ export class Planet {
     ctx.fill();
   }
 }
+export class PlanetComposable {
+  constructor(position, renderAlgorithm, moveAlgorithm) {
+    this.position = position;
+    this.renderAlgorithm = renderAlgorithm;
+    this.moveAlgorithm = moveAlgorithm;
+  }
+  move() {
+    if (this.moveAlgorithm) {
+      this.moveAlgorithm.move(this.position);
+    }
+  }
+  render(ctx) {
+    if (this.renderAlgorithm) {
+      this.renderAlgorithm.render(ctx, this.position);
+    }
+  }
+}
 export class RotatedPlanet extends Planet {
   constructor(color, atmosphere, size, center, radius, speed) {
     super(color, atmosphere, new Position(center.x + radius + size, center.y + radius + size), size);
