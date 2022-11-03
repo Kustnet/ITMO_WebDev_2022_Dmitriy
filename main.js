@@ -1,4 +1,15 @@
-import { Earth, Mars, Moon, PlanetComposable, Position, RotatedPlanet, Sun } from '@/solar-system.js';
+import {
+  Earth,
+  Mars,
+  Moon,
+  MoveRotateAlgorithm,
+  PlanetComposable,
+  Position,
+  RenderCirclePlanetAlgorithm,
+  RenderSquarePlanetAlgorithm,
+  RotatedPlanet,
+  Sun,
+} from '@/solar-system.js';
 
 const canvas = document.createElement('canvas');
 canvas.width = window.innerWidth;
@@ -8,20 +19,38 @@ canvas.style.backgroundColor = '#f1f1f1';
 document.getElementById('app').append(canvas);
 
 const ctx = canvas.getContext('2d');
+
 const sun = new Sun(new Position(canvas.width / 2, canvas.height / 2));
 const earth = new Earth(sun.position, sun.size + 100);
-const mars = new Mars(sun.position, sun.size + 300);
-const moon = new Moon(earth.position, earth.size + 20);
+const mars = new Mars(sun.position, sun.size + 250);
+const moon = new Moon(earth.position, earth.size + 30);
 
-const planets = [sun, earth, mars, moon];
+const planets = [sun, earth, moon, mars];
 
 window.requestAnimationFrame(renderPlanets);
+
+const r1 = new RenderCirclePlanetAlgorithm('blue', 'lightblue', 50);
+const r2 = new RenderSquarePlanetAlgorithm('red', 'lightblue', 30);
+const m1 = new MoveRotateAlgorithm(150, 0.04);
+
+const planetComposable = new PlanetComposable(new Position(100, 100), r1, m1);
+
+document.onclick = (e) => {
+  planetComposable.offset = new Position(e.pageX, e.pageY);
+  if (planetComposable.renderAlgorithm instanceof RenderCirclePlanetAlgorithm) {
+    planetComposable.renderAlgorithm = r2;
+  } else planetComposable.renderAlgorithm = r1;
+  asteroids.push(createAsteroids(e.pageX, e.pageY));
+};
+
+const asteroids = new Array(5).fill(10).map(() => createAsteroids());
 
 function renderPlanets() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  planetComposable.render(ctx);
   planetComposable.move();
+
+  renderAsteroids(canvas, asteroids);
 
   planets.forEach((item) => {
     if (item instanceof RotatedPlanet) {
@@ -29,45 +58,32 @@ function renderPlanets() {
     }
     item.render(ctx);
   });
+  planetComposable.render(ctx);
 
   window.requestAnimationFrame(renderPlanets);
 }
-
-class RenderCirclePlanetAlgorithm {
-  constructor(color, atmosphere, size) {
-    this.color = color;
-    this.atmosphere = atmosphere;
-    this.size = size;
-  }
-  render(ctx, position) {
-    ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.strokeStyle = this.atmosphere;
-    ctx.arc(position.x, position.y, this.size, 0, 2 * Math.PI);
+function renderAsteroids(canvas, array) {
+  const ctx = canvas.getContext('2d');
+  let counter = array.length;
+  const draw = (index) => {
+    const position = array[index];
+    ctx.fillStyle = 'black';
+    ctx.fillRect(position.x, position.y, 100, 100);
     ctx.stroke();
     ctx.fill();
-  }
+    if (++index < counter) draw(index);
+  };
+  draw(0);
+}
+function randomRange(max, min = 0) {
+  if (isNaN(max) || isNaN(min)) throw new Error('> randomRange - Error: "Input parameters must be a number"');
+  return Math.random() * (max - min) + min;
+}
+function createAsteroids(x, y) {
+  const borderSize = 40;
+  const randomX = x || randomRange(canvas.width - borderSize, borderSize);
+  const randomY = y || randomRange(canvas.height - borderSize, borderSize);
+  return new Position(randomX, randomY);
 }
 
-class MoveRotateAlgorithm {
-  constructor(center, radius, speed) {
-    this.center = center;
-    this.radius = radius;
-    this.speed = speed;
-    this.alpha = 0;
-  }
-  move(position) {
-    this.alpha += this.speed / Math.PI;
-    position.x = this.radius * Math.sin(this.alpha) + this.center.x;
-    position.y = this.radius * Math.cos(this.alpha) + this.center.y;
-    if (this.alpha >= 2 * Math.PI) this.alpha = 0;
-  }
-}
-const planetComposable = new PlanetComposable(
-  new Position(100, 100),
-  new RenderCirclePlanetAlgorithm('blye', 'black', 50),
-  new MoveRotateAlgorithm(sun.position, 100, 0.04)
-);
-document.onclick = (e) => {
-  planetComposable.offset = new Position(e.pageX, e.pageY);
-};
+window.requestAnimationFrame(renderPlanets);
