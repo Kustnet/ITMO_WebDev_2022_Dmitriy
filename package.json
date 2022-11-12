@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test:cy:open": "yarn dev & cypress open",
+    "test:cy:open": "cypress open",
     "cy.open": "yarn dev & yarn run cypress open --e2e"
   },
   "devDependencies": {

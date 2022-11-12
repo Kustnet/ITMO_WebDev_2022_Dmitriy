@@ -1,3 +1,5 @@
+import DOM from '../../src/consts/dom.js';
+
 describe('empty spec', () => {
   before(() => {
     cy.visit('http://localhost:8888');
@@ -31,5 +33,18 @@ describe('empty spec', () => {
     cy.reload(true);
 
     checkChildren();
+  });
+  const createTodo = (text) => {
+    cy.get(`#${DOM.INP_TODO_TITLE}`).type(text);
+    cy.get(`#${DOM.BTN_CREATE_TODO}`).click();
+  };
+
+  it('create todo and validate selection rules', () => {
+    ['Todo 1', 'Todo 2'].forEach(createTodo);
+    const cyTodoListChildren = cy.get(`#${DOM.LIST_OF_TODOS}`).children();
+    const cyFirstTodoItem = cyTodoListChildren.eq(0);
+    cyFirstTodoItem.click().then(($child) => {
+      cy.get(`#${DOM.INP_TODO_TITLE}`).should('have.value', $child.text().trim());
+    });
   });
 });
