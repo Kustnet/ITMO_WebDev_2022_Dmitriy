@@ -41,10 +41,23 @@ describe('empty spec', () => {
 
   it('create todo and validate selection rules', () => {
     ['Todo 1', 'Todo 2'].forEach(createTodo);
-    const cyTodoListChildren = cy.get(`#${DOM.LIST_OF_TODOS}`).children();
-    const cyFirstTodoItem = cyTodoListChildren.eq(0);
-    cyFirstTodoItem.click().then(($child) => {
-      cy.get(`#${DOM.INP_TODO_TITLE}`).should('have.value', $child.text().trim());
-    });
+    cy.get(`#${DOM.INP_TODO_TITLE}`).clear();
+    const clickOnListItemAndCheckInputValueFromFunctionCall = (listItemIndex, getCompareValue) =>
+      cy
+        .get(`#${DOM.LIST_OF_TODOS}`)
+        .children()
+        .eq(listItemIndex)
+        .click()
+        .then(($child) => {
+          cy.get(`#${DOM.INP_TODO_TITLE}`).should('have.value', getCompareValue($child));
+        });
+    const getTextFromTodoItemDomElement = ($child) => $child.text().trim();
+    clickOnListItemAndCheckInputValueFromFunctionCall(0, getTextFromTodoItemDomElement)
+      .then(() => {
+        clickOnListItemAndCheckInputValueFromFunctionCall(0, () => '');
+      })
+      .then(() => {
+        clickOnListItemAndCheckInputValueFromFunctionCall(1, getTextFromTodoItemDomElement);
+      });
   });
 });
