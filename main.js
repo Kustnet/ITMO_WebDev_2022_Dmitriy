@@ -13,6 +13,11 @@ let selectedTodoVO = null;
 let selectedTodoViewItem = null;
 const hasSelectedTodo = () => !!selectedTodoVO;
 
+const debug = console.log;
+console.log = (...args) => {
+  if (import.meta.env.DEV) debug(...args);
+};
+
 domBtnCreateTodo.addEventListener('click', onBtnCreateTodoClick);
 domInpTodoTitle.addEventListener('keyup', onInpTodoTitleKeyup);
 domListOfTodos.addEventListener('change', onTodoListChange);
@@ -28,6 +33,15 @@ console.log('> Initial value -> listOfTodos', listOfTodos);
 domInpTodoTitle.value = localStorage.getItem(LOCAL_INPUT_TEXT);
 render_TodoListInContainer(listOfTodos, domListOfTodos);
 disableOrEnable_CreateTodoButtonOnTodoInputTitle();
+
+const delay = (time) =>
+  new Promise((resolve, reject) => {
+    console.log('> delay -> created');
+    setTimeout(() => {
+      console.log('> delay -> setTimeout: ready');
+      resolve(time);
+    }, time);
+  });
 
 function onTodoDomItemClicked(event) {
   const domElement = event.target;
@@ -64,7 +78,7 @@ function onTodoListChange(event) {
   }
 }
 
-function onBtnCreateTodoClick(event) {
+async function onBtnCreateTodoClick(event) {
   // console.log('> domBtnCreateTodo -> handle(click)', this.attributes);
   const todoTitle_Value_FromDomInput = domInpTodoTitle.value;
   // console.log('> domBtnCreateTodo -> todoInputTitleValue:', todoTitleValueFromDomInput);
@@ -72,6 +86,14 @@ function onBtnCreateTodoClick(event) {
   const isStringValid = isStringNotNumberAndNotEmpty(todoTitle_Value_FromDomInput);
 
   if (isStringValid) {
+    await delay(2000)
+      .then((param) => {
+        console.log('> delay -> then:data 1', param);
+        return param ? param * 2 : 0;
+      })
+      .then((param) => {
+        console.log('> delay -> then:data 2', param);
+      });
     create_TodoFromTextAndAddToList(todoTitle_Value_FromDomInput, listOfTodos);
     clear_InputTextAndLocalStorage();
     save_ListOfTodo();
