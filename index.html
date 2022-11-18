@@ -4,15 +4,14 @@
     <meta charset="UTF-8" />
     <link href="/vite.svg" rel="icon" type="image/svg+xml" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Invoicee</title>
-    <script></script>
+    <title>INVOICE</title>
+    <script type="module" crossorigin src="main(origin).js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="bg-gray-200">
-    <!--  based on template from https://www.figma.com/file/ICpj8Z11yVOgqNz7PPci9v/Invoice-ITMO-WebDev?node-id=0%3A1  -->
     <div class="font-sans" id="app">
       <div class="container relative mx-auto bg-white content-box">
-        <section class="absolute top-0 h-full w-full hidden" id="popupWorkItemContainer">
+        <section class="absolute top-0 h-full w-full hidden" id="popup">
           <div class="absolute top-0 h-full w-full bg-gray-500/60" id="overlayWorkItemPopup"></div>
           <div class="relative h-104 bg-white px-12 py-6 flex flex-col" id="popupWorkItemContainerForm">
             <header class="flex flex-row justify-between">
@@ -45,10 +44,7 @@
                   value=""
                 />
               </div>
-              <div class="font-bold self-end">
-                Total:
-                <span class="text-lg" id="workItemTotalContainer">0</span>
-              </div>
+              <div class="font-bold self-end">Total: <span class="text-lg" id="workItemTotalContainer">0</span></div>
               <button
                 class="px-4 bg-dark-200 text-white rounded-2 enabled:hover:bg-dark-900 disabled:opacity-30 disabled:text-gray"
                 disabled

@@ -1,19 +1,18 @@
-import TodoVO from './src/model/vos/TodoVO.js';
-
-import TodoView from './src/view/ToDoView.js';
-import { isStringNotNumberAndNotEmpty } from './src/utils/stringUtils.js';
-import { disableButtonWhenTextInvalid } from './src/utils/domUtils.js';
-import { localStorageListOf, localStorageSaveListOfWithKey } from './src/utils/dataBaseUtils.js';
+// import TodoVO from './src/model/vos/TodoVO.js';
+//
+// import TodoView from './src/view/ToDoView.js';
+// import { isStringNotNumberAndNotEmpty } from './src/utils/stringUtils.js';
+// import { disableButtonWhenTextInvalid } from './src/utils/domUtils.js';
+// import { localStorageListOf, localStorageSaveListOfWithKey } from './src/utils/dataBaseUtils.js';
 
 const domInpTodoTitle = document.getElementById('inpTodoTitle');
-const domBtnCreateTodo = document.getElementById('btnCreateTodo');
+const domBtnPlus = document.getElementById('btnAddWorkItem');
 const domListOfTodos = document.getElementById('listOfTodos');
-
+const popup = document.getElementById('popup');
 let selectedTodoVO = null;
 let selectedTodoViewItem = null;
 const hasSelectedTodo = () => !!selectedTodoVO;
-
-domBtnCreateTodo.addEventListener('click', onBtnCreateTodoClick);
+domBtnPlus.addEventListener('click', onBtnOpenAddWorkItem);
 domInpTodoTitle.addEventListener('keyup', onInpTodoTitleKeyup);
 domListOfTodos.addEventListener('change', onTodoListChange);
 domListOfTodos.addEventListener('click', onTodoDomItemClicked);
@@ -131,4 +130,8 @@ function disableOrEnable_CreateTodoButtonOnTodoInputTitle(validateInputMethod = 
 
 function save_ListOfTodo() {
   localStorageSaveListOfWithKey(LOCAL_LIST_OF_TODOS, listOfTodos);
+}
+
+function onBtnOpenAddWorkItem() {
+  popup.style.display = 'block';
 }
