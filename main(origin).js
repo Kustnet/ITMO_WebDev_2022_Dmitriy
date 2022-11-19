@@ -4,6 +4,7 @@ const popup = document.getElementById('popup');
 
 domBtnPlus.addEventListener('click', onBtnOpenAddWorkItem);
 domBtnClose.addEventListener('click', onBtnCloseAddWorkItem);
+
 function onBtnOpenAddWorkItem() {
   popup.style.display = 'block';
 }
