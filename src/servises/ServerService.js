@@ -46,6 +46,16 @@ class ServerService {
         throw error;
       });
   }
+  async deleteTodo(id) {
+    return fetch(`${this.path}/${id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => processResponse(response, 'deleteTodo'))
+      .catch((error) => {
+        console.log(`> ServerService -> deleteTodos: error = ${error}`);
+        throw error;
+      });
+  }
 }
 
 export default ServerService;
