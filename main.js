@@ -64,17 +64,6 @@ async function onTodoDomItemClicked(event) {
           })
           .catch(() => {});
       }
-      // const deleteTodoVO = findTodoById(TodoView.getTodoIdFromDeleteButton(domElement));
-      // console.log('> onTodoDomItemClicked: parentNode =', parentNode);
-      // if (confirm(`Delete ${deleteTodoVO.title}?`)) {
-      //   await todoServerService
-      //     .deleteTodo(deleteTodoVO.id)
-      //     .then(() => {
-      //       listOfTodos.splice(listOfTodos.indexOf(deleteTodoVO), 1);
-      //       render_TodoListInContainer(listOfTodos, $(Dom.LIST_OF_TODOS));
-      //     })
-      //     .catch(alert);
-      // }
     }
     return;
   }
