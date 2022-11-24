@@ -19,10 +19,9 @@ class TodoView {
                id="${vo.id}">
         <input type="checkbox" id="${index}"${checked}>${vo.title}
         <button 
-        data-type="${TodoView.TODO_VIEW_ITEM_DELETE}"
+         data-type="${TodoView.TODO_VIEW_ITEM_DELETE}"
          class = 'delete-button'
-         style="position: absolute;right: 0; top:0; color: red ">x</button>
-     
+         style="position: absolute;right: 0; top:0; color: red ">Delete</button>
     </li>`;
   }
 }
