@@ -1,30 +1,27 @@
 {
-  "name": "lesson-2-intro-html",
-  "private": true,
+  "name": "vue-lessons",
   "version": "0.0.0",
-  "type": "module",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "server:simple": "simple-server dist 3000",
-    "server:json": "echo 'JSON Server Start' && json-server --watch db.todos.json --port 3003 --static dist -d 1000",
     "preview": "vite preview",
-    "test:cy:open": "cypress open",
-    "cy.open": "yarn dev & yarn run cypress open --e2e"
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.12",
-    "cypress": "^10.10.0",
-    "postcss": "^8.4.17",
-    "tailwindcss": "^3.1.8",
-    "vite": "^3.1.0",
-    "vitest": "^0.25.1"
+    "test:unit": "vitest --environment jsdom --root src/",
+    "test:e2e": "start-server-and-test preview :4173 'cypress run --e2e'",
+    "test:e2e:dev": "start-server-and-test 'vite dev' 'cypress open --e2e'"
   },
   "dependencies": {
-    "prettier": "^2.7.1"
+    "pinia": "^2.0.26",
+    "vue": "^3.2.45",
+    "vue-router": "^4.1.6"
   },
-  "prettier": {
-    "printWidth": 120,
-    "singleQuote": true
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.2.0",
+    "@vue/test-utils": "^2.2.4",
+    "cypress": "^11.2.0",
+    "jsdom": "^20.0.3",
+    "start-server-and-test": "^1.14.0",
+    "vite": "^3.2.4",
+    "vitest": "^0.25.3"
   }
 }
