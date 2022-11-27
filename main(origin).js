@@ -6,6 +6,7 @@ const domInputCost = document.getElementById('inputWorkItemCost');
 const domItem = document.getElementById('workItemTotalContainer');
 const domWorkItem = document.getElementById('inputWorkItemTitle');
 const domDescription = document.getElementById('inputWorkItemDescription');
+const domBtnCreate = document.getElementById('btnCreateWorkItem');
 
 // popup total and save  to localStorage;
 domBtnPlus.addEventListener('click', onBtnOpenAddWorkItem);
@@ -14,6 +15,7 @@ domInputQty.addEventListener('input', totalItemAndSaveLocalStorage);
 domInputCost.addEventListener('input', totalItemAndSaveLocalStorage);
 domWorkItem.addEventListener('keyup', totalItemAndSaveLocalStorage);
 domDescription.addEventListener('keyup', totalItemAndSaveLocalStorage);
+domBtnCreate.addEventListener('click', addItemPopup);
 
 function onBtnOpenAddWorkItem() {
   popup.style.display = 'block';
@@ -61,7 +63,7 @@ const item1 = new todoItem(
   localStorage.getItem('domInputCost'),
   localStorage.getItem('domWorkItem'),
   localStorage.getItem('domItemTotal'),
-  localStorage.getItem('domItemTotal')
+  localStorage.getItem('domDescription')
 );
 
 console.log(item1);
@@ -70,18 +72,38 @@ console.log(item1);
   const text = document.createTextNode('Я новый текстовый узел');
 }
 ////////////
-document.getElementById('div1').onload = addElement;
-function addElement() {
-  // create a new div element
-  const newDiv = document.createElement('div');
+function addItemPopup() {
+  // const item = document.createElement('div');
+  // document.getElementById('tableWorkItems').append(item);
+  // item.innerText = localStorage.getItem('domWorkItem');
+  // const Description = document.createElement('div');
+  // item.append(Description);
+  // item.style.background = 'lightgray';
+  // Description.innerText = localStorage.getItem('domDescription');
+  // Description.style.fontSize = '10px';
+  //
+  //
+  // const addItem = document.createElement('div');
+  // document.getElementById('tableWorkItems').append(addItem);
+  // const item = document.createElement('div');
+  // const description = document.createElement('div');
+  // const qty = document.createElement('div');
+  // const cost = document.createElement('div');
+  // const total = document.createElement('div');
+  // addItem.append(item, qty, cost, total);
+  // item.innerText = localStorage.getItem('domWorkItem');
+  // qty.innerText = localStorage.getItem('domInputQty');
+  // cost.innerText = localStorage.getItem('domInputCost');
+  // total.innerText = localStorage.getItem('domItemTotal');
 
-  // and give it some content
-  const newContent = document.createTextNode('Hi there and greetings!');
-
-  // add the text node to the newly created div
-  newDiv.appendChild(newContent);
-
-  // add the newly created element and its content into the DOM
-  const currentDiv = document.getElementById('div1');
-  document.getElementById('div1').insertBefore(newDiv, currentDiv);
+  const addItem = document.getElementById('tableWorkItems');
+  const simpleCopy = addItem.cloneNode(true);
+  document.getElementById('tableWorkItems').append(simpleCopy);
+  console.log(simpleCopy);
+  simpleCopy.querySelector('.title').innerHTML = localStorage.getItem('domWorkItem');
+  simpleCopy.querySelector('.description').innerHTML = localStorage.getItem('domDescription');
+  simpleCopy.querySelector('.Qty').innerHTML = localStorage.getItem('domInputQty');
+  simpleCopy.querySelector('.Cost').innerHTML = localStorage.getItem('domInputCost');
+  simpleCopy.querySelector('.total').innerHTML = localStorage.getItem('domItemTotal');
+  domBtnClose.click();
 }

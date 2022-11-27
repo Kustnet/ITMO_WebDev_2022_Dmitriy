@@ -47,7 +47,6 @@
               <div class="font-bold self-end">Total: <span class="text-lg" id="workItemTotalContainer">0</span></div>
               <button
                 class="px-4 bg-black text-white rounded-xl enabled:hover:bg-dark-900 disabled:opacity-30 disabled:text-gray"
-                disabled
                 id="btnCreateWorkItem"
               >
                 Create
@@ -165,12 +164,12 @@
                     layout-template-fro-work-item
                   >
                     <div class="col-span-4 self-end pl-2 pr-3">
-                      <div class="font-bold">Example Title</div>
-                      <div class="text-xs text-gray-400">Example description</div>
+                      <div class="title font-bold"><strong></strong></div>
+                      <div class="description text-xs text-gray-400"></div>
                     </div>
-                    <div>100</div>
-                    <div>500</div>
-                    <div class="col-span-2 text-right pr-2">1110</div>
+                    <div class="Qty"></div>
+                    <div class="Cost"></div>
+                    <div class="col-span-2 text-right pr-2, total" id="Total"></div>
                   </div>
                 </div>
               </div>
