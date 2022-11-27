@@ -68,14 +68,20 @@ console.log(item1);
 {
   const $elem = document.createElement('p');
   const text = document.createTextNode('Я новый текстовый узел');
-
-  document.getElementById(inputWorkItemCost).appendChild(a);
 }
 ////////////
+document.getElementById('div1').onload = addElement;
+function addElement() {
+  // create a new div element
+  const newDiv = document.createElement('div');
 
-const $list = document.querySelector('tableWorkItems');
+  // and give it some content
+  const newContent = document.createTextNode('Hi there and greetings!');
 
-$list.insertAdjacentHTML('beforebegin', '<h2>Веб-технологии</h2>');
-$list.insertAdjacentHTML('afterbegin', '<li>HTML</li>');
-$list.insertAdjacentHTML('beforeend', '<li>JavaScript</li>');
-$list.insertAdjacentHTML('afterend', '<p>Для фронтенд разработчиков</p>');
+  // add the text node to the newly created div
+  newDiv.appendChild(newContent);
+
+  // add the newly created element and its content into the DOM
+  const currentDiv = document.getElementById('div1');
+  document.getElementById('div1').insertBefore(newDiv, currentDiv);
+}
