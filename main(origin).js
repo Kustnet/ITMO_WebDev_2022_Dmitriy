@@ -4,11 +4,16 @@ const popup = document.getElementById('popup');
 const domInputQty = document.getElementById('inputWorkItemQty');
 const domInputCost = document.getElementById('inputWorkItemCost');
 const domItem = document.getElementById('workItemTotalContainer');
-// console.log(domInputQty);
+const domWorkItem = document.getElementById('inputWorkItemTitle');
+const domDescription = document.getElementById('inputWorkItemDescription');
+
+// popup total and save  to localStorage;
 domBtnPlus.addEventListener('click', onBtnOpenAddWorkItem);
 domBtnClose.addEventListener('click', onBtnCloseAddWorkItem);
-domInputQty.addEventListener('input', totalItem);
-domInputCost.addEventListener('input', totalItem);
+domInputQty.addEventListener('input', totalItemAndSaveLocalStorage);
+domInputCost.addEventListener('input', totalItemAndSaveLocalStorage);
+domWorkItem.addEventListener('keyup', totalItemAndSaveLocalStorage);
+domDescription.addEventListener('keyup', totalItemAndSaveLocalStorage);
 
 function onBtnOpenAddWorkItem() {
   popup.style.display = 'block';
@@ -17,19 +22,20 @@ function onBtnCloseAddWorkItem() {
   popup.style.display = 'none';
 }
 
-function totalItem() {
+function totalItemAndSaveLocalStorage() {
   const qty = domInputQty.value;
   // console.log(typeof domInputQty.value, domInputQty.value);
-  localStorage.setItem('domInputQty', document.getElementById('inputWorkItemQty').value);
+  localStorage.setItem('domInputQty', domInputQty.value);
   const cost = domInputCost.value;
   // console.log(typeof domInputCost.value, domInputCost.value);
-  localStorage.setItem('domInputCost', document.getElementById('inputWorkItemCost').value);
-
+  localStorage.setItem('domInputCost', domInputCost.value);
+  localStorage.setItem('domWorkItem', domWorkItem.value);
+  localStorage.setItem('domDescription', domDescription.value);
   if (!isNaN(qty || cost)) {
     let total = qty * cost;
     domItem.innerHTML = total;
     console.log(total);
-    localStorage.setItem('domItem', total);
+    localStorage.setItem('domItemTotal', total);
   } else {
     alert('Нужно писать число!');
   }
@@ -38,14 +44,8 @@ function totalItem() {
 // let val = document.getElementById('inputWorkItemQty').value;
 // localStorage.setItem('inputWorkItemQty', val);
 // console.log('LOG', domInputQty);
-// localStorage.setItem('localStorageNick', document.getElementById('inputWorkItemQty').value);
-
-// const qtyLocalStorage = localStorage.getItem();
-// console.log(domInputQty.value);
-function localStorageSave(key, value) {
-  localStorage.setItem(key, value);
-}
-// localStorageSave('domInputQty', domInputQty.value);
+const d = localStorage.getItem('domWorkItem');
+console.log(d);
 
 class todoItem {
   constructor(qty, cost, total, workItem, description) {
@@ -56,8 +56,26 @@ class todoItem {
     this.description = description;
   }
 }
-new todoItem(domInputQty.value, domInputCost.value, domItem.value);
+const item1 = new todoItem(
+  localStorage.getItem('domInputQty'),
+  localStorage.getItem('domInputCost'),
+  localStorage.getItem('domWorkItem'),
+  localStorage.getItem('domItemTotal'),
+  localStorage.getItem('domItemTotal')
+);
+
+console.log(item1);
 {
-  const a = document.createElement();
+  const $elem = document.createElement('p');
+  const text = document.createTextNode('Я новый текстовый узел');
+
   document.getElementById(inputWorkItemCost).appendChild(a);
 }
+////////////
+
+const $list = document.querySelector('tableWorkItems');
+
+$list.insertAdjacentHTML('beforebegin', '<h2>Веб-технологии</h2>');
+$list.insertAdjacentHTML('afterbegin', '<li>HTML</li>');
+$list.insertAdjacentHTML('beforeend', '<li>JavaScript</li>');
+$list.insertAdjacentHTML('afterend', '<p>Для фронтенд разработчиков</p>');
