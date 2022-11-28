@@ -7,8 +7,8 @@ const domItem = document.getElementById('workItemTotalContainer');
 const domWorkItem = document.getElementById('inputWorkItemTitle');
 const domDescription = document.getElementById('inputWorkItemDescription');
 const domBtnCreate = document.getElementById('btnCreateWorkItem');
+const domSubtotal = document.getElementById('resultsSubtotalContainer');
 
-// popup total and save  to localStorage;
 domBtnPlus.addEventListener('click', onBtnOpenAddWorkItem);
 domBtnClose.addEventListener('click', onBtnCloseAddWorkItem);
 domInputQty.addEventListener('input', totalItemAndSaveLocalStorage);
@@ -33,45 +33,51 @@ function totalItemAndSaveLocalStorage() {
   localStorage.setItem('domInputCost', domInputCost.value);
   localStorage.setItem('domWorkItem', domWorkItem.value);
   localStorage.setItem('domDescription', domDescription.value);
+  localStorage.setItem('domDescription', domDescription.value);
+
   if (!isNaN(qty || cost)) {
     let total = qty * cost;
     domItem.innerHTML = total;
-    console.log(total);
+    // console.log('> Final total', total);
     localStorage.setItem('domItemTotal', total);
   } else {
     alert('Нужно писать число!');
   }
 }
+// Заготовка для создания Item через классы
+// class todoItem {
+//   constructor(qty, cost, total, workItem, description) {
+//     this.qty = qty;
+//     this.cost = cost;
+//     this.total = total;
+//     this.workItem = workItem;
+//     this.description = description;
+//   }
+// }
+// const item1 = new todoItem(
+//   localStorage.getItem('domInputQty'),
+//   localStorage.getItem('domInputCost'),
+//   localStorage.getItem('domWorkItem'),
+//   localStorage.getItem('domItemTotal'),
+//   localStorage.getItem('domDescription')
+// );
 
-// let val = document.getElementById('inputWorkItemQty').value;
-// localStorage.setItem('inputWorkItemQty', val);
-// console.log('LOG', domInputQty);
-const d = localStorage.getItem('domWorkItem');
-console.log(d);
+function subtotalDiscountAndTaxes() {
+  let subtotal = domSubtotal.innerHTML;
+  localStorage.setItem('Subtotal', subtotal);
+  const subBefore = localStorage.getItem('Subtotal');
+  console.log('>subBefore>', subBefore);
+  let total = localStorage.getItem('domItemTotal');
+  console.log('>total>', total);
+  const subAfter = Number(subBefore) + Number(total);
+  console.log('>subAfter>', subAfter);
+  domSubtotal.innerHTML = subAfter;
 
-class todoItem {
-  constructor(qty, cost, total, workItem, description) {
-    this.qty = qty;
-    this.cost = cost;
-    this.total = total;
-    this.workItem = workItem;
-    this.description = description;
-  }
+  // доделать добавление налога и скидки
+  function discount() {}
+  function taxes() {}
 }
-const item1 = new todoItem(
-  localStorage.getItem('domInputQty'),
-  localStorage.getItem('domInputCost'),
-  localStorage.getItem('domWorkItem'),
-  localStorage.getItem('domItemTotal'),
-  localStorage.getItem('domDescription')
-);
 
-console.log(item1);
-{
-  const $elem = document.createElement('p');
-  const text = document.createTextNode('Я новый текстовый узел');
-}
-////////////
 function addItemPopup() {
   // const item = document.createElement('div');
   // document.getElementById('tableWorkItems').append(item);
@@ -95,15 +101,16 @@ function addItemPopup() {
   // qty.innerText = localStorage.getItem('domInputQty');
   // cost.innerText = localStorage.getItem('domInputCost');
   // total.innerText = localStorage.getItem('domItemTotal');
-
+  // ДЕЛАЕТ ДВОЙНУЮ КОПИЮ ПОСЛЕ ВЫЗОВА ФУНКЦИИ (НАДО ИСПРАВИТЬ)!
   const addItem = document.getElementById('tableWorkItems');
   const simpleCopy = addItem.cloneNode(true);
   document.getElementById('tableWorkItems').append(simpleCopy);
-  console.log(simpleCopy);
+  // console.log(simpleCopy);
   simpleCopy.querySelector('.title').innerHTML = localStorage.getItem('domWorkItem');
   simpleCopy.querySelector('.description').innerHTML = localStorage.getItem('domDescription');
   simpleCopy.querySelector('.Qty').innerHTML = localStorage.getItem('domInputQty');
   simpleCopy.querySelector('.Cost').innerHTML = localStorage.getItem('domInputCost');
   simpleCopy.querySelector('.total').innerHTML = localStorage.getItem('domItemTotal');
+  subtotalDiscountAndTaxes();
   domBtnClose.click();
 }
