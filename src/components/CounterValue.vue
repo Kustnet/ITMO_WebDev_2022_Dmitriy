@@ -1,6 +1,6 @@
 <template>
   <p
-     class='counter-value'>
+     class='value' :class="{alert: isAlert}">
     <span style="color: blue">
       {{title}}
     </span>
@@ -12,13 +12,24 @@ export default {
   props:{
     title: "",
     value: 0,
-  }
+  },
+  computed:{
+    isAlert(){
+      return this.value >=10
+    }
+  },
 };
 </script>
-<style>
-  p.counter-value{
+<style lang="scss" scoped>
+  .value {
     color: red;
     font-size: 3rem;
     font-weight: bolder;
+
+    &.alert {
+      background-color: lightgrey;
+    }
   }
+
+
 </style>

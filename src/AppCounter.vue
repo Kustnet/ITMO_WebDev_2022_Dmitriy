@@ -1,46 +1,68 @@
-<template xmlns:CounterValue="http://www.w3.org/1999/html">
-  <h1>
-    App Counter
-  </h1>
+<template>
+  <h1 ref="header">App Counter</h1>
+  <CounterValue
+      class="counter"
+      v-for="obj in [{ index: 1, text: 'Clicked' }]"
+      :title="obj.text"
+      :value="counter"
+      :key="obj.index"
+  />
 
-
-  <CounterValue v-for="obj in [
-      {index:1,text:'Clicked'},
-  ]" :title="obj.text" :value ="counter" :key ="obj.index"/>
-  <p v-html="innerHTML"></p>
-  <button v-on:click="onPlus">+</button>
-  <button v-if="canRenderMinusBtnVisible" @click="onMinus">-</button>
+  <button v-on:click="onPlus" style="background-color: greenyellow">+</button>
+  <button v-if="canRenderMinusButton" @click="onMinus" style="background-color: red">-</button>
 </template>
 <script>
-import CounterValue from "@/components/CounterValue.vue";
+import CounterValue from './components/CounterValue.vue';
+
+const LOCAL_KEY_COUNTER = 'counter';
+
+const saveCounter = (value) => localStorage.setItem(LOCAL_KEY_COUNTER, value);
+let counterWatcher = null
 export default {
-  components: {CounterValue},
+  components: {
+    CounterValue,
+  },
   data() {
     return {
       counter: 0,
-      innerHTML:`<h2>Hello</h2>`
-    }
+    };
   },
-  computed:{
-    canRenderMinusBtnVisible(){
+  created() {
+    console.log('> created: ', this.counter);
+    this.counter = localStorage.getItem(LOCAL_KEY_COUNTER) || 0;
+    counterWatcher = this.$watch(
+        () => this.counter,
+        (newValue, oldValue) => {
+      saveCounter(newValue);
+    });
+  },
+  mounted() {
+    console.log('> mounted: ', this.counter);
+  },
+  computed: {
+    canRenderMinusButton() {
       return this.counter > 0;
     },
-
   },
-  methods:{
-    onPlus(){
+  methods: {
+    onPlus() {
       this.counter++;
+      if(this.counter > 0){
+        this.$refs.header.innerHTML = 'App Counter'}
+
+      console.log('> Counter -> onPlus:', this.counter);
     },
-    onMinus(){
+    onMinus() {
       this.counter--;
+      if(this.counter === 0){
+      this.$refs.header.innerHTML = 'Hello'}
+      console.log('> Counter -> onMinus:', this.counter);
     },
-  }
+  },
 };
 </script>
-<style>
-  p.counter-value{
-    color: red;
-    font-size: 3rem;
-    font-weight: bolder;
-  }
+<style lang="scss" scoped>
+.counter {
+  color: green;
+}
 </style>
