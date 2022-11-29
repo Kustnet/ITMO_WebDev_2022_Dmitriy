@@ -8,6 +8,8 @@ const domWorkItem = document.getElementById('inputWorkItemTitle');
 const domDescription = document.getElementById('inputWorkItemDescription');
 const domBtnCreate = document.getElementById('btnCreateWorkItem');
 const domSubtotal = document.getElementById('resultsSubtotalContainer');
+const containerForWorkItems = document.getElementById('tableWorkItems');
+const workItemTemplateSimpleCopy = containerForWorkItems.querySelector('#templateWorkItem');
 
 domBtnPlus.addEventListener('click', onBtnOpenAddWorkItem);
 domBtnClose.addEventListener('click', onBtnCloseAddWorkItem);
@@ -102,8 +104,7 @@ function addItemPopup() {
   // cost.innerText = localStorage.getItem('domInputCost');
   // total.innerText = localStorage.getItem('domItemTotal');
   // ДЕЛАЕТ ДВОЙНУЮ КОПИЮ ПОСЛЕ ВЫЗОВА ФУНКЦИИ (НАДО ИСПРАВИТЬ)!
-  const addItem = document.getElementById('tableWorkItems');
-  const simpleCopy = addItem.cloneNode(true);
+  const simpleCopy = workItemTemplateSimpleCopy.cloneNode(true);
   document.getElementById('tableWorkItems').append(simpleCopy);
   // console.log(simpleCopy);
   simpleCopy.querySelector('.title').innerHTML = localStorage.getItem('domWorkItem');
