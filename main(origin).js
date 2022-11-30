@@ -8,6 +8,11 @@ const domWorkItem = document.getElementById('inputWorkItemTitle');
 const domDescription = document.getElementById('inputWorkItemDescription');
 const domBtnCreate = document.getElementById('btnCreateWorkItem');
 const domSubtotal = document.getElementById('resultsSubtotalContainer');
+const domDiscount = document.getElementById('resultsDiscountContainer');
+const domDiscountInput = document.getElementById('inputDiscountPercent');
+const domTaxes = document.getElementById('resultsTaxesContainer');
+const domTaxesInput = document.getElementById('inputTaxPercent');
+const domResults = document.getElementById('resultsTotalContainer');
 const containerForWorkItems = document.getElementById('tableWorkItems');
 const workItemTemplateSimpleCopy = containerForWorkItems.querySelector('#templateWorkItem');
 
@@ -18,6 +23,8 @@ domInputCost.addEventListener('input', totalItemAndSaveLocalStorage);
 domWorkItem.addEventListener('keyup', totalItemAndSaveLocalStorage);
 domDescription.addEventListener('keyup', totalItemAndSaveLocalStorage);
 domBtnCreate.addEventListener('click', addItemPopup);
+domDiscountInput.addEventListener('input', discountAndTaxes);
+domTaxesInput.addEventListener('input', discountAndTaxes);
 
 function onBtnOpenAddWorkItem() {
   popup.style.display = 'block';
@@ -46,23 +53,6 @@ function totalItemAndSaveLocalStorage() {
     alert('Нужно писать число!');
   }
 }
-// Заготовка для создания Item через классы
-// class todoItem {
-//   constructor(qty, cost, total, workItem, description) {
-//     this.qty = qty;
-//     this.cost = cost;
-//     this.total = total;
-//     this.workItem = workItem;
-//     this.description = description;
-//   }
-// }
-// const item1 = new todoItem(
-//   localStorage.getItem('domInputQty'),
-//   localStorage.getItem('domInputCost'),
-//   localStorage.getItem('domWorkItem'),
-//   localStorage.getItem('domItemTotal'),
-//   localStorage.getItem('domDescription')
-// );
 
 function subtotalDiscountAndTaxes() {
   let subtotal = domSubtotal.innerHTML;
@@ -74,36 +64,40 @@ function subtotalDiscountAndTaxes() {
   const subAfter = Number(subBefore) + Number(total);
   console.log('>subAfter>', subAfter);
   domSubtotal.innerHTML = subAfter;
+  localStorage.setItem('SubtotalEnd', subAfter);
+}
+// доделать добавление налога и скидки
 
-  // доделать добавление налога и скидки
-  function discount() {}
-  function taxes() {}
+function discountAndTaxes() {
+  let result = localStorage.getItem('SubtotalEnd');
+  let discountResult = result;
+  domDiscount.innerHTML = discountResult;
+  const discount = Number(domDiscountInput.value);
+  console.log(typeof discount, discount);
+
+  if (discount > 0) {
+    let percentDis = Math.floor((result / 100) * discount);
+    // console.log('>percent>', percent);
+    discountResult = result - percentDis;
+    domDiscount.innerHTML = discountResult;
+    domResults.innerHTML = discountResult;
+  } else {
+    domDiscount.innerHTML = 0;
+    domResults.innerHTML = discountResult;
+  }
+  const taxes = domTaxesInput.value;
+  // if (taxes > 0) {
+  let percentTax = Math.floor((discountResult / 100) * taxes);
+  domTaxes.innerHTML = Math.ceil(percentTax);
+  domResults.innerHTML = discountResult + percentTax;
+  // } else {
+  //   let percentTax = Math.floor((result / 100) * taxes);
+  //   domTaxes.innerHTML = Math.ceil(percentTax);
+  //   domResults.innerHTML = Number(result) + Number(percentTax);
+  // }
 }
 
 function addItemPopup() {
-  // const item = document.createElement('div');
-  // document.getElementById('tableWorkItems').append(item);
-  // item.innerText = localStorage.getItem('domWorkItem');
-  // const Description = document.createElement('div');
-  // item.append(Description);
-  // item.style.background = 'lightgray';
-  // Description.innerText = localStorage.getItem('domDescription');
-  // Description.style.fontSize = '10px';
-  //
-  //
-  // const addItem = document.createElement('div');
-  // document.getElementById('tableWorkItems').append(addItem);
-  // const item = document.createElement('div');
-  // const description = document.createElement('div');
-  // const qty = document.createElement('div');
-  // const cost = document.createElement('div');
-  // const total = document.createElement('div');
-  // addItem.append(item, qty, cost, total);
-  // item.innerText = localStorage.getItem('domWorkItem');
-  // qty.innerText = localStorage.getItem('domInputQty');
-  // cost.innerText = localStorage.getItem('domInputCost');
-  // total.innerText = localStorage.getItem('domItemTotal');
-  // ДЕЛАЕТ ДВОЙНУЮ КОПИЮ ПОСЛЕ ВЫЗОВА ФУНКЦИИ (НАДО ИСПРАВИТЬ)!
   const simpleCopy = workItemTemplateSimpleCopy.cloneNode(true);
   document.getElementById('tableWorkItems').append(simpleCopy);
   // console.log(simpleCopy);
@@ -114,4 +108,5 @@ function addItemPopup() {
   simpleCopy.querySelector('.total').innerHTML = localStorage.getItem('domItemTotal');
   subtotalDiscountAndTaxes();
   domBtnClose.click();
+  discountAndTaxes();
 }
