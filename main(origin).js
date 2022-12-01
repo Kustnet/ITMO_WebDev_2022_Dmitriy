@@ -86,15 +86,9 @@ function discountAndTaxes() {
     domResults.innerHTML = discountResult;
   }
   const taxes = domTaxesInput.value;
-  // if (taxes > 0) {
   let percentTax = Math.floor((discountResult / 100) * taxes);
   domTaxes.innerHTML = Math.ceil(percentTax);
-  domResults.innerHTML = discountResult + percentTax;
-  // } else {
-  //   let percentTax = Math.floor((result / 100) * taxes);
-  //   domTaxes.innerHTML = Math.ceil(percentTax);
-  //   domResults.innerHTML = Number(result) + Number(percentTax);
-  // }
+  domResults.innerHTML = Number(discountResult) + Number(percentTax);
 }
 
 function addItemPopup() {
