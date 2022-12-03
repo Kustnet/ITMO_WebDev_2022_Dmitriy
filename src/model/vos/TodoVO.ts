@@ -1,4 +1,10 @@
-class TodoVO {
+interface ITodoVO {
+  get id(): string;
+  isCompleted: boolean;
+  title: string;
+}
+
+class TodoVO implements ITodoVO {
   private readonly _id: string;
   private readonly _date: Date;
 
@@ -23,3 +29,4 @@ class TodoVO {
 }
 
 export default TodoVO;
+export type { ITodoVO };
