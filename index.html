@@ -18,17 +18,16 @@
               <button class="text-red enabled:hover:font-bold disabled:text-gray-300" id="btnDeleteWorkItemPopup">
                 Delete
               </button>
-              <button class="text-gray hover:text-black" id="btnCloseWorkItemPopup">close</button>
+              <button class="text-gray-400 hover:text-black" id="btnCloseWorkItemPopup">close</button>
             </header>
             <main class="flex flex-row justify-between mt-8">
               <h1 class="text-4xl font-bold" id="titleWorkItemContainer">Add</h1>
               <div class="font-bold self-end">
                 <label for="inputWorkItemQty">Qty: </label>
                 <input
-                  class="w-16 input-percentage"
+                  style="outline: 0; border-width: 0 0 2px; border-color: lightgray"
+                  class="w-16"
                   id="inputWorkItemQty"
-                  pattern="[0-9]{2}"
-                  required
                   type="text"
                   value=""
                 />
@@ -36,17 +35,16 @@
               <div class="font-bold self-end">
                 <label for="inputWorkItemCost">Cost: $</label>
                 <input
-                  class="w-16 input-percentage"
+                  class="w-16"
                   id="inputWorkItemCost"
-                  pattern="[0-9]{2}"
-                  required
+                  style="outline: 0; border-width: 0 0 2px; border-color: lightgray"
                   type="text"
                   value=""
                 />
               </div>
               <div class="font-bold self-end">Total: <span class="text-lg" id="workItemTotalContainer">0</span></div>
               <button
-                class="px-4 bg-black text-white rounded-xl enabled:hover:bg-dark-900 disabled:opacity-30 disabled:text-gray"
+                class="px-4 bg-gray-800 text-white rounded-xl enabled:hover:bg-black disabled:opacity-30 disabled:text-gray"
                 id="btnCreateWorkItem"
               >
                 Create
@@ -61,7 +59,7 @@
                     </div>
                     <div class="w-full mt-1">
                       <input
-                        class="bg-gray-100 border-1 w-full h-full p-2"
+                        class="bg-gray-100 border-2 w-full h-full p-2"
                         id="inputWorkItemTitle"
                         placeholder="Enter title of the work item"
                       />
@@ -75,7 +73,7 @@
                     </div>
                     <div class="w-full mt-1 h-32">
                       <textarea
-                        class="bg-gray-100 border-1 w-full h-full p-2"
+                        class="bg-gray-100 border-2 w-full h-full p-2"
                         id="inputWorkItemDescription"
                         placeholder="Write what this work item about"
                         style="resize: none"
@@ -158,6 +156,7 @@
                     <div class="col-span-2 text-right">Total <span class="text-gray-300">($)</span></div>
                   </div>
                 </section>
+                <hr class="my-1 h-px bg-black border-0" />
                 <div class="flex-col" id="tableWorkItems">
                   <div
                     id="templateWorkItem"
@@ -180,7 +179,8 @@
                 </button>
               </div>
               <div class="flex flex-row justify-end mt-16">
-                <div class="w-50%">
+                <div class="w-1/2">
+                  <hr class="my-1 h-px bg-black border-0" />
                   <section class="border-top leading-8 pt-2">
                     <div class="flex flex-col">
                       <div class="flex flex-row justify-between">
@@ -196,7 +196,7 @@
                             pattern="[0-9]{2}"
                             required
                             type="text"
-                            value="0"
+                            placeholder="0"
                           />
                           % ) <sup class="text-gray-400">floor</sup>
                         </span>
@@ -205,21 +205,15 @@
                       <div class="flex flex-row justify-between">
                         <span>
                           <label for="inputTaxPercent">Taxes (</label>
-                          <input
-                            class="w-6 input-percentage"
-                            id="inputTaxPercent"
-                            pattern="[0-9]{2}"
-                            required
-                            type="text"
-                            value="0"
-                          />
+                          <input class="w-6" id="inputTaxPercent" type="text" placeholder="0" />
                           % ) <sup class="text-gray-400">ceil</sup>
                         </span>
                         <span id="resultsTaxesContainer">0</span>
                       </div>
                     </div>
                   </section>
-                  <section class="border-top mt-16 leading-8 pt-2">
+                  <section class="mt-16 leading-8 pt-2">
+                    <hr class="my-1 h-px bg-black border-0" />
                     <div class="flex flex-row justify-between">
                       <b>Result:</b>
                       <span>
@@ -233,14 +227,14 @@
             </div>
           </main>
           <footer class="flex flex-row justify-end mt-36">
-            <section class="flex-col w-50%">
+            <section class="flex-col w-1/2">
               <header class="flex flex-row justify-between">
                 <b>IBAN</b>
                 <input
-                  class="w-78 input-percentage placeholder:text-slate-200"
+                  style="outline: 0; border-width: 0 0 2px; border-color: gray"
+                  class="w-1/2 placeholder:text-slate-200"
                   id="inputIBANNumber"
                   placeholder="Up to 34 alphanumeric characters"
-                  required
                   type="text"
                   value=""
                 />

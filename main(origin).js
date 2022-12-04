@@ -28,7 +28,12 @@ domTaxesInput.addEventListener('input', discountAndTaxes);
 
 function onBtnOpenAddWorkItem() {
   popup.style.display = 'block';
+  domInputQty.value = '';
+  domInputCost.value = '';
+  domWorkItem.value = '';
+  domDescription.value = '';
 }
+
 function onBtnCloseAddWorkItem() {
   popup.style.display = 'none';
 }
