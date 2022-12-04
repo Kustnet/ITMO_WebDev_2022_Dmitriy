@@ -1,6 +1,7 @@
 const domBtnPlus = document.getElementById('btnAddWorkItem');
 const domBtnClose = document.getElementById('btnCloseWorkItemPopup');
 const popup = document.getElementById('popup');
+const domInpInvoiceNumber = document.getElementById('inputInvoiceNumber');
 const domInputQty = document.getElementById('inputWorkItemQty');
 const domInputCost = document.getElementById('inputWorkItemCost');
 const domItem = document.getElementById('workItemTotalContainer');
@@ -13,9 +14,12 @@ const domDiscountInput = document.getElementById('inputDiscountPercent');
 const domTaxes = document.getElementById('resultsTaxesContainer');
 const domTaxesInput = document.getElementById('inputTaxPercent');
 const domResults = document.getElementById('resultsTotalContainer');
+const domInputIBAN = document.getElementById('inputIBANNumber');
 const containerForWorkItems = document.getElementById('tableWorkItems');
 const workItemTemplateSimpleCopy = containerForWorkItems.querySelector('#templateWorkItem');
 
+domInpInvoiceNumber.addEventListener('input', saveInvoiceNumberAndIBANInLocalStorage);
+domInputIBAN.addEventListener('input', saveInvoiceNumberAndIBANInLocalStorage);
 domBtnPlus.addEventListener('click', onBtnOpenAddWorkItem);
 domBtnClose.addEventListener('click', onBtnCloseAddWorkItem);
 domInputQty.addEventListener('input', totalItemAndSaveLocalStorage);
@@ -25,6 +29,11 @@ domDescription.addEventListener('keyup', totalItemAndSaveLocalStorage);
 domBtnCreate.addEventListener('click', addItemPopup);
 domDiscountInput.addEventListener('input', discountAndTaxes);
 domTaxesInput.addEventListener('input', discountAndTaxes);
+
+function saveInvoiceNumberAndIBANInLocalStorage() {
+  localStorage.setItem('domInvoiceNumber', domInpInvoiceNumber.value);
+  localStorage.setItem('domIBAN', domInputIBAN.value);
+}
 
 function onBtnOpenAddWorkItem() {
   popup.style.display = 'block';

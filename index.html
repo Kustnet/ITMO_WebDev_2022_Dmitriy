@@ -25,8 +25,7 @@
               <div class="font-bold self-end">
                 <label for="inputWorkItemQty">Qty: </label>
                 <input
-                  style="outline: 0; border-width: 0 0 2px; border-color: lightgray"
-                  class="w-16"
+                  class="w-16 border-b-2 focus:border-slate-500 border-gray-300 focus:text-slate-500 focus:outline-none"
                   id="inputWorkItemQty"
                   type="text"
                   value=""
@@ -35,9 +34,8 @@
               <div class="font-bold self-end">
                 <label for="inputWorkItemCost">Cost: $</label>
                 <input
-                  class="w-16"
+                  class="w-16 border-b-2 focus:border-slate-500 border-gray-300 focus:text-slate-500 focus:outline-none"
                   id="inputWorkItemCost"
-                  style="outline: 0; border-width: 0 0 2px; border-color: lightgray"
                   type="text"
                   value=""
                 />
@@ -191,10 +189,8 @@
                         <span>
                           <label for="inputDiscountPercent">Discount (</label>
                           <input
-                            class="w-6 input-percentage"
+                            class="w-6 border-b-2 focus:border-slate-500 border-gray-300 focus:text-slate-500 focus:outline-none"
                             id="inputDiscountPercent"
-                            pattern="[0-9]{2}"
-                            required
                             type="text"
                             placeholder="0"
                           />
@@ -205,7 +201,12 @@
                       <div class="flex flex-row justify-between">
                         <span>
                           <label for="inputTaxPercent">Taxes (</label>
-                          <input class="w-6" id="inputTaxPercent" type="text" placeholder="0" />
+                          <input
+                            class="w-6 border-b-2 focus:border-slate-500 border-gray-300 focus:text-slate-500 focus:outline-none"
+                            id="inputTaxPercent"
+                            type="text"
+                            placeholder="0"
+                          />
                           % ) <sup class="text-gray-400">ceil</sup>
                         </span>
                         <span id="resultsTaxesContainer">0</span>
@@ -231,8 +232,7 @@
               <header class="flex flex-row justify-between">
                 <b>IBAN</b>
                 <input
-                  style="outline: 0; border-width: 0 0 2px; border-color: gray"
-                  class="w-1/2 placeholder:text-slate-200"
+                  class="w-1/2 placeholder:text-slate-200 border-b-2 border-gray-300 focus:border-slate-500 focus:text-slate-500 focus:outline-none"
                   id="inputIBANNumber"
                   placeholder="Up to 34 alphanumeric characters"
                   type="text"
