@@ -29,6 +29,12 @@ domDescription.addEventListener('keyup', totalItemAndSaveLocalStorage);
 domBtnCreate.addEventListener('click', addItemPopup);
 domDiscountInput.addEventListener('input', discountAndTaxes);
 domTaxesInput.addEventListener('input', discountAndTaxes);
+// применить функцию InputLimit к другим полям ввода с ограничением 2
+domInpInvoiceNumber.oninput = function InputLimit() {
+  if (this.value.length > 4) {
+    this.value = this.value.slice(0, 4);
+  }
+};
 
 function saveInvoiceNumberAndIBANInLocalStorage() {
   localStorage.setItem('domInvoiceNumber', domInpInvoiceNumber.value);
@@ -68,7 +74,7 @@ function totalItemAndSaveLocalStorage() {
   }
 }
 
-function subtotalDiscountAndTaxes() {
+function subtotal() {
   let subtotal = domSubtotal.innerHTML;
   localStorage.setItem('Subtotal', subtotal);
   const subBefore = localStorage.getItem('Subtotal');
@@ -80,7 +86,6 @@ function subtotalDiscountAndTaxes() {
   domSubtotal.innerHTML = subAfter;
   localStorage.setItem('SubtotalEnd', subAfter);
 }
-// доделать добавление налога и скидки
 
 function discountAndTaxes() {
   let result = localStorage.getItem('SubtotalEnd');
@@ -114,7 +119,22 @@ function addItemPopup() {
   simpleCopy.querySelector('.Qty').innerHTML = localStorage.getItem('domInputQty');
   simpleCopy.querySelector('.Cost').innerHTML = localStorage.getItem('domInputCost');
   simpleCopy.querySelector('.total').innerHTML = localStorage.getItem('domItemTotal');
-  subtotalDiscountAndTaxes();
+  subtotal();
   domBtnClose.click();
   discountAndTaxes();
 }
+// сохранение данных из инпута в storage---не работает с AddItem
+document.addEventListener('DOMContentLoaded', function () {
+  // событие загрузки страницы
+  // выбираем на странице все элементы типа textarea и input
+  document.querySelectorAll('textarea, input').forEach(function (e) {
+    // если данные значения уже записаны в sessionStorage, то вставляем их в поля формы
+    // путём этого мы как раз берём данные из памяти браузера, если страница была случайно перезагружена
+    if (e.value === '') e.value = window.sessionStorage.getItem(e.name, e.value);
+    // на событие ввода данных (включая вставку с помощью мыши) вешаем обработчик
+    e.addEventListener('input', function () {
+      // и записываем в sessionStorage данные, в качестве имени используя атрибут name поля элемента ввода
+      window.sessionStorage.setItem(e.name, e.value);
+    });
+  });
+});

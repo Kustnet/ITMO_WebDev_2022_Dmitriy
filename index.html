@@ -27,7 +27,7 @@
                 <input
                   class="w-16 border-b-2 focus:border-slate-500 border-gray-300 focus:text-slate-500 focus:outline-none"
                   id="inputWorkItemQty"
-                  type="text"
+                  type="number"
                   value=""
                 />
               </div>
@@ -36,7 +36,7 @@
                 <input
                   class="w-16 border-b-2 focus:border-slate-500 border-gray-300 focus:text-slate-500 focus:outline-none"
                   id="inputWorkItemCost"
-                  type="text"
+                  type="number"
                   value=""
                 />
               </div>
@@ -89,11 +89,13 @@
               <h1 class="text-[44px] text-slate-400">
                 <label for="inputInvoiceNumber">№ </label>
                 <input
+                  max="9999"
                   class="w-32 border-b-2 focus:border-slate-500 focus:text-slate-500 focus:outline-none"
                   id="inputInvoiceNumber"
                   pattern="[0-9]"
                   required
-                  type="text"
+                  type="number"
+                  name="invoice"
                 />
               </h1>
             </div>
@@ -191,8 +193,9 @@
                           <input
                             class="w-6 border-b-2 focus:border-slate-500 border-gray-300 focus:text-slate-500 focus:outline-none"
                             id="inputDiscountPercent"
-                            type="text"
+                            type="number"
                             placeholder="0"
+                            name="discount"
                           />
                           % ) <sup class="text-gray-400">floor</sup>
                         </span>
@@ -204,12 +207,13 @@
                           <input
                             class="w-6 border-b-2 focus:border-slate-500 border-gray-300 focus:text-slate-500 focus:outline-none"
                             id="inputTaxPercent"
-                            type="text"
+                            type="number"
                             placeholder="0"
+                            name="taxes"
                           />
                           % ) <sup class="text-gray-400">ceil</sup>
                         </span>
-                        <span id="resultsTaxesContainer">0</span>
+                        <span id="resultsTaxesContainer"></span>
                       </div>
                     </div>
                   </section>
@@ -218,7 +222,7 @@
                     <div class="flex flex-row justify-between">
                       <b>Result:</b>
                       <span>
-                        <span id="resultsTotalContainer">0</span>
+                        <span id="resultsTotalContainer"></span>
                         <span class="text-gray-300">$</span>
                       </span>
                     </div>
@@ -236,7 +240,9 @@
                   id="inputIBANNumber"
                   placeholder="Up to 34 alphanumeric characters"
                   type="text"
+                  maxlength="30"
                   value=""
+                  name="iban"
                 />
               </header>
               <main class="mt-4 text-sm text-gray-500">
