@@ -36,10 +36,11 @@ domInpInvoiceNumber.oninput = function InputLimit() {
   }
 };
 
-function saveInvoiceNumberAndIBANInLocalStorage() {
-  localStorage.setItem('domInvoiceNumber', domInpInvoiceNumber.value);
-  localStorage.setItem('domIBAN', domInputIBAN.value);
-}
+// Данные сохраняются в SessionStorage
+// function saveInvoiceNumberAndIBANInLocalStorage() {
+//   localStorage.setItem('domInvoiceNumber', domInpInvoiceNumber.value);
+//   localStorage.setItem('domIBAN', domInputIBAN.value);
+// }
 
 function onBtnOpenAddWorkItem() {
   popup.style.display = 'block';
