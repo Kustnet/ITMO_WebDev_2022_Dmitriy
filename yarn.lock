@@ -2385,11 +2385,6 @@
     "has-symbols" "^1.0.3"
     "object-keys" "^1.1.1"
 
-"ometa@0.2.2":
-  "integrity" "sha512-LZuoK/yjU3FvrxPjUXUlZ1bavCfBPqauA7fsNdwi+AVhRdyk2IzgP3JRnevvjzQ6fKHdUw8YISshf53FmpHrng=="
-  "resolved" "https://registry.npmjs.org/ometa/-/ometa-0.2.2.tgz"
-  "version" "0.2.2"
-
 "once@^1.3.0", "once@^1.3.1", "once@^1.4.0":
   "integrity" "sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w=="
   "resolved" "https://registry.npmjs.org/once/-/once-1.4.0.tgz"
@@ -2560,7 +2555,12 @@
   "resolved" "https://registry.npmjs.org/pify/-/pify-3.0.0.tgz"
   "version" "3.0.0"
 
-"pinia@^2.0.26":
+"pinia-plugin-persistedstate@^3.0.1":
+  "integrity" "sha512-WRNWtR4v8StJqBQH+Qiz88SGnlr4wvEyh7wtA+fYEVLoIOnpZ0v4FICvUcC8eUkAIvQL3n6/Ew2yryw7okazvA=="
+  "resolved" "https://registry.npmjs.org/pinia-plugin-persistedstate/-/pinia-plugin-persistedstate-3.0.1.tgz"
+  "version" "3.0.1"
+
+"pinia@^2.0.0", "pinia@^2.0.26":
   "integrity" "sha512-tSxZNUcMGxQOvKZRjPKXxd2+/2NZhRF/CoYVE/+K6uE/Z3v1Oi4fcQFpxu5nMB1dCchjXUZ+lz0tBxV5ntwmQQ=="
   "resolved" "https://registry.npmjs.org/pinia/-/pinia-2.0.26.tgz"
   "version" "2.0.26"
@@ -2793,13 +2793,6 @@
   "version" "6.0.0"
   dependencies:
     "xmlchars" "^2.2.0"
-
-"scss@^0.2.4":
-  "integrity" "sha512-4u8V87F+Q/upVhUmhPnB4C1R11xojkRkWjExL2v0CX2EXTg18VrKd+9JWoeyCp2VEMdSpJsyAvVU+rVjogh51A=="
-  "resolved" "https://registry.npmjs.org/scss/-/scss-0.2.4.tgz"
-  "version" "0.2.4"
-  dependencies:
-    "ometa" "0.2.2"
 
 "semver@^5.5.0":
   "integrity" "sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ=="

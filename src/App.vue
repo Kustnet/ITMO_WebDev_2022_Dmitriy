@@ -1,23 +1,46 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import AppTodo from './AppTodo.vue'
-</script>
+import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router';
+import { useTodosStore } from '@/stores/todos';
+import { storeToRefs } from 'pinia';
+import { ref, Transition, KeepAlive } from 'vue';
+import Routes from "./Consts/Routes";
 
+const todoStore = useTodosStore();
+const { numberOfTodos } = storeToRefs(todoStore);
+
+const RouterHome = Routes.HOME;
+const RouterCounter = Routes.COUNTER;
+
+const router = useRouter();
+
+const isCurrentRouteIndex = () => {
+  const route = useRoute();
+  const result = route.path === '/';
+  console.log('isCurrentRouteIndex:', result);
+  return result;
+};
+
+const canRenderNumberOfTodos = ref(isCurrentRouteIndex());
+</script>
 <template>
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
+    <div v-if="canRenderNumberOfTodos">Todos created: {{ numberOfTodos }}</div>
+    <div>Current route: {{$route.path}}</div>
     <div class="wrapper">
-      <AppTodo/>
-
-<!--      <nav>-->
-<!--        <RouterLink to="/">Home</RouterLink>-->
-<!--        <RouterLink to="/about">About</RouterLink>-->
-<!--      </nav>-->
+      <nav>
+        <RouterLink :to="RouterHome">Todos</RouterLink>
+        <RouterLink :to="RouterCounter">Counter</RouterLink>
+      </nav>
     </div>
   </header>
-
-<!--  <RouterView />-->
+  <main>
+    <RouterView v-slot="{ Component }">
+      <KeepAlive>
+        <component :is="Component" />
+      </KeepAlive>
+    </RouterView>
+  </main>
 </template>
 
 <style scoped>

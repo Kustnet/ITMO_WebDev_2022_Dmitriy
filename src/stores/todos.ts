@@ -1,8 +1,10 @@
-import { defineStore } from "pinia";
+import { defineStore, type StoreDefinition } from "pinia";
 import type { ITodoVO } from "@/model/vos/TodoVO";
+import TodoVO from "@/model/vos/TodoVO";
+import type { PersistedStateOptions } from "pinia-plugin-persistedstate";
+import type { RouteParamValue } from "vue-router";
 
-export const LOCAL_KEY_TODOS = "todos";
-export const LOCAL_KEY_TEXT = "text";
+const LOCAL_KEY_TODOS = "todos";
 
 interface State {
   todos: ITodoVO[];
@@ -11,29 +13,51 @@ interface State {
 }
 
 export const useTodosStore = defineStore("todos", {
-  state: () => ({
-    todos: JSON.parse(localStorage.getItem(LOCAL_KEY_TODOS) as string) || [],
+  state: (): State => ({
+    todos: [],
     selected: null,
     isLoading: false,
   }),
   getters: {
-    isSelectedActive(state): boolean {
-      return !!state.selected;
-    },
-    isTodoNotSelected(): boolean {
-      return !this.isSelectedActive;
-    },
+    hasSelectedTodo: (state) => !!state.selected,
+    numberOfTodos: (state) => state.todos.length,
   },
   actions: {
-    checkTodoSelected(todo: ITodoVO) {
-      return this.selected === todo;
+    findTodoByIndex(index: string | RouteParamValue[]): TodoVO | null {
+      return index < this.todos.length ? (this.todos[index] as TodoVO) : null;
     },
-    selectTodo(todo: ITodoVO) {
-      const result = this.selected === todo;
+    findTodoIndex(todo: ITodoVO): number {
+      return this.todos.indexOf(todo);
+    },
+    setupSelectedTodo(todo: ITodoVO | null): void {
+      console.log("> store -> setupSelectedTodo:", { todo });
+      this.selected = todo;
+    },
+    updateSelectedTodoTitle(text: string): void {
+      console.log("> store -> updateSelectedTodoTitle:", { text });
+      this.selected!.title = text;
+    },
+    createTodoFromText(text: string): void {
+      console.log("> store -> createTodoFromText:", { text });
+      this.todos.push(TodoVO.createFromTitle(text));
+    },
+    deleteTodo(todo: ITodoVO): void {
+      console.log("> store -> deleteTodo:", { ...todo });
+      this.todos.splice(this.findTodoIndex(todo), 1);
+    },
+    compareTextWithSelectedTodoTitle(text: string): boolean {
+      const result = this.hasSelectedTodo && this.selected?.title === text;
+      console.log("> store -> compareTextWithSelectedTodoTitle:", { result });
       return result;
     },
-    deselectTodo(todo: ITodoVO) {
-      this.selected = null;
+    checkTodoSelected(todo: ITodoVO): boolean {
+      const result = this.hasSelectedTodo && this.selected === todo;
+      console.log("> store -> checkTodoSelected:", { result });
+      return result;
     },
+  },
+  persist: {
+    storage: localStorage,
+    paths: [LOCAL_KEY_TODOS],
   },
 });

@@ -1,4 +1,5 @@
 <template>
+
   <h1 ref="header">App Counter</h1>
   <CounterValue
       v-if="isShown"
@@ -11,6 +12,7 @@
   {{ isShown ? 'More than 10' : 'Less than 10' }}
   <button v-on:click="onPlus">+</button>
   <button v-if="canRenderMinusButton" @click="onMinus">-</button>
+
 </template>
 <script>
 import CounterValue from './components/CounterValue.vue';
