@@ -37,10 +37,10 @@ domInpInvoiceNumber.oninput = function InputLimit() {
 };
 
 // Данные сохраняются в SessionStorage
-// function saveInvoiceNumberAndIBANInLocalStorage() {
-//   localStorage.setItem('domInvoiceNumber', domInpInvoiceNumber.value);
-//   localStorage.setItem('domIBAN', domInputIBAN.value);
-// }
+function saveInvoiceNumberAndIBANInLocalStorage() {
+  localStorage.setItem('domInvoiceNumber', domInpInvoiceNumber.value);
+  localStorage.setItem('domIBAN', domInputIBAN.value);
+}
 
 function onBtnOpenAddWorkItem() {
   popup.style.display = 'block';
