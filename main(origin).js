@@ -1,3 +1,6 @@
+import InvoiceVO from './Invoice/InvoiceVO.js';
+import WorkItemVO from './Invoice/WorkItemVO.js';
+
 const domBtnPlus = document.getElementById('btnAddWorkItem');
 const domBtnClose = document.getElementById('btnCloseWorkItemPopup');
 const popup = document.getElementById('popup');
@@ -18,8 +21,18 @@ const domInputIBAN = document.getElementById('inputIBANNumber');
 const containerForWorkItems = document.getElementById('tableWorkItems');
 const workItemTemplateSimpleCopy = containerForWorkItems.querySelector('#templateWorkItem');
 
-domInpInvoiceNumber.addEventListener('input', saveInvoiceNumberAndIBANInLocalStorage);
-domInputIBAN.addEventListener('input', saveInvoiceNumberAndIBANInLocalStorage);
+const LOCAL_KEY_INVOICE = 'invoice';
+
+const invoiceVO = JSON.parse(localStorage.getItem(LOCAL_KEY_INVOICE)) || new InvoiceVO();
+let selectedWorkItemVO = null;
+
+domInpInvoiceNumber.addEventListener('input', () => {
+  invoiceVO.id = domInpInvoiceNumber.value;
+  saveInvoiceNumberAndIBANInLocalStorage();
+});
+domInputIBAN.addEventListener('input', () => {
+  saveInvoiceNumberAndIBANInLocalStorage();
+});
 domBtnPlus.addEventListener('click', onBtnOpenAddWorkItem);
 domBtnClose.addEventListener('click', onBtnCloseAddWorkItem);
 domInputQty.addEventListener('input', totalItemAndSaveLocalStorage);
@@ -38,11 +51,15 @@ domInpInvoiceNumber.oninput = function InputLimit() {
 
 // Данные сохраняются в SessionStorage
 function saveInvoiceNumberAndIBANInLocalStorage() {
-  localStorage.setItem('domInvoiceNumber', domInpInvoiceNumber.value);
-  localStorage.setItem('domIBAN', domInputIBAN.value);
+  localStorage.setItem('invoice', JSON.stringify(invoiceVO));
+  //localStorage.setItem('domInvoiceNumber', domInpInvoiceNumber.value);
+  //localStorage.setItem('domIBAN', domInputIBAN.value);
 }
 
-function onBtnOpenAddWorkItem() {
+const findWorkItemById = (id) => invoiceVO.items.find((vo) => vo.id === id);
+
+function onBtnOpenAddWorkItem(id) {
+  selectedWorkItemVO = id ? findWorkItemById(id) : new WorkItemVO(Date.now().toString());
   popup.style.display = 'block';
   domInputQty.value = '';
   domInputCost.value = '';
@@ -115,14 +132,20 @@ function addItemPopup() {
   const simpleCopy = workItemTemplateSimpleCopy.cloneNode(true);
   document.getElementById('tableWorkItems').append(simpleCopy);
   // console.log(simpleCopy);
-  simpleCopy.querySelector('.title').innerHTML = localStorage.getItem('domWorkItem');
+  invoiceVO.items.push(selectedWorkItemVO);
+
+  simpleCopy.id = selectedWorkItemVO.id;
+  simpleCopy.querySelector('.title').innerHTML = selectedWorkItemVO.title; //localStorage.getItem('domWorkItem');
   simpleCopy.querySelector('.description').innerHTML = localStorage.getItem('domDescription');
   simpleCopy.querySelector('.Qty').innerHTML = localStorage.getItem('domInputQty');
   simpleCopy.querySelector('.Cost').innerHTML = localStorage.getItem('domInputCost');
   simpleCopy.querySelector('.total').innerHTML = localStorage.getItem('domItemTotal');
+
+  selectedWorkItemVO = null;
   subtotal();
   domBtnClose.click();
   discountAndTaxes();
+  saveInvoiceNumberAndIBANInLocalStorage();
 }
 // сохранение данных из инпута в storage---не работает с AddItem
 document.addEventListener('DOMContentLoaded', function () {
