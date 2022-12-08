@@ -23,7 +23,7 @@ export const useTodosStore = defineStore("todos", {
     numberOfTodos: (state) => state.todos.length,
   },
   actions: {
-    findTodoByIndex(index: string | RouteParamValue[]): TodoVO | null {
+    findTodoByIndex(index: number): TodoVO | null {
       return index < this.todos.length ? (this.todos[index] as TodoVO) : null;
     },
     findTodoIndex(todo: ITodoVO): number {

@@ -36,7 +36,7 @@ const canRenderNumberOfTodos = ref(isCurrentRouteIndex());
   </header>
   <main>
     <RouterView v-slot="{ Component }">
-      <KeepAlive>
+      <KeepAlive exclude="TodoItemView">
         <component :is="Component" />
       </KeepAlive>
     </RouterView>
@@ -52,6 +52,9 @@ header {
 .logo {
   display: block;
   margin: 0 auto 2rem;
+}
+header .wrapper{
+  margin: 2rem 0;
 }
 
 nav {

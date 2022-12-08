@@ -1,6 +1,7 @@
 <template>
 
   <h1 ref="header">App Counter</h1>
+  <div>{{ isShown ? 'More than 10' : 'Less than 10' }}</div>
   <CounterValue
       v-if="isShown"
       class="counter"
@@ -9,9 +10,9 @@
       :value="counter"
       :key="obj.index"
   />
-  {{ isShown ? 'More than 10' : 'Less than 10' }}
-  <button v-on:click="onPlus">+</button>
-  <button v-if="canRenderMinusButton" @click="onMinus">-</button>
+
+  <vs-button style="margin-right: 0.5rem" color="dark" v-on:click="onPlus">+</vs-button>
+  <vs-button color="dark" v-if="canRenderMinusButton" @click="onMinus">-</vs-button>
 
 </template>
 <script>
