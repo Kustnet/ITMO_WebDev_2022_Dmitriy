@@ -59,7 +59,7 @@ function saveInvoiceNumberAndIBANInLocalStorage() {
 const findWorkItemById = (id) => invoiceVO.items.find((vo) => vo.id === id);
 
 function onBtnOpenAddWorkItem(id) {
-  selectedWorkItemVO = id ? findWorkItemById(id) : new WorkItemVO(Date.now().toString());
+  // selectedWorkItemVO = id ? findWorkItemById(id) : new WorkItemVO(Date.now().toString());
   popup.style.display = 'block';
   domInputQty.value = '';
   domInputCost.value = '';

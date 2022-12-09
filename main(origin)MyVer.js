@@ -18,6 +18,7 @@ const domInputIBAN = document.getElementById('inputIBANNumber');
 const containerForWorkItems = document.getElementById('tableWorkItems');
 const workItemTemplateSimpleCopy = containerForWorkItems.querySelector('#templateWorkItem');
 
+popup.addEventListener('keyup', validateQtyCostDescription);
 domInpInvoiceNumber.addEventListener('input', saveInvoiceNumberAndIBANInLocalStorage);
 domInputIBAN.addEventListener('input', saveInvoiceNumberAndIBANInLocalStorage);
 domBtnPlus.addEventListener('click', onBtnOpenAddWorkItem);
@@ -29,6 +30,8 @@ domDescription.addEventListener('keyup', totalItemAndSaveLocalStorage);
 domBtnCreate.addEventListener('click', addItemPopup);
 domDiscountInput.addEventListener('input', discountAndTaxes);
 domTaxesInput.addEventListener('input', discountAndTaxes);
+// containerForWorkItems.addEventListener('click', openAndChangeWorkItem);
+
 // применить функцию InputLimit к другим полям ввода с ограничением 2
 domInpInvoiceNumber.oninput = function InputLimit() {
   if (this.value.length > 4) {
@@ -120,6 +123,7 @@ function addItemPopup() {
   simpleCopy.querySelector('.Qty').innerHTML = localStorage.getItem('domInputQty');
   simpleCopy.querySelector('.Cost').innerHTML = localStorage.getItem('domInputCost');
   simpleCopy.querySelector('.total').innerHTML = localStorage.getItem('domItemTotal');
+  simpleCopy.style.display = '';
   subtotal();
   domBtnClose.click();
   discountAndTaxes();
@@ -139,3 +143,32 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+function validateQtyCostDescription() {
+  if (domInputQty.value !== '' && domInputCost.value !== '' && domWorkItem.value !== '') {
+    domBtnCreate.disabled = false;
+  } else {
+    domBtnCreate.disabled = true;
+  }
+}
+
+function openAndChangeWorkItem() {
+  popup.style.display = 'block';
+  domInputQty.value = this.value;
+  domInputCost.value = '';
+  domWorkItem.value = '';
+  domDescription.value = '';
+}
+containerForWorkItems.addEventListener('click', (e) => {
+  const elem = e.target;
+  // console.log(typeof elem);
+  // const templateWorkItem = elem.firstChild;
+  //
+  // const total = templateWorkItem.lastChild;
+  // console.log(total);
+  let elems = e.target.querySelector('#Cost');
+  console.log(elems);
+});
+
+// document.onclick = function (e) {
+//   if (e.target.tagName !== 'a') e.target.style.display = 'none';
+// };
