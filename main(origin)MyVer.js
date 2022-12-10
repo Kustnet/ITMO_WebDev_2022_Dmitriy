@@ -33,11 +33,23 @@ domTaxesInput.addEventListener('input', discountAndTaxes);
 // containerForWorkItems.addEventListener('click', openAndChangeWorkItem);
 
 // применить функцию InputLimit к другим полям ввода с ограничением 2
-domInpInvoiceNumber.oninput = function InputLimit() {
-  if (this.value.length > 4) {
-    this.value = this.value.slice(0, 4);
+
+// domInpInvoiceNumber.oninput = function InputLimit() {
+//   if (this.value.length > 4) {
+//     this.value = this.value.slice(0, 4);
+//   }
+// };
+
+domInpInvoiceNumber.oninput = (event) => InputLimit(4, event.currentTarget);
+domInputQty.oninput = (event) => InputLimit(2, event.currentTarget);
+domInputCost.oninput = (event) => InputLimit(2, event.currentTarget);
+
+function InputLimit(num, input) {
+  if (input.value.length > num) {
+    input.value = input.value.slice(0, num);
+    console.log('InputLimit', input.value);
   }
-};
+}
 
 // Данные сохраняются в SessionStorage
 function saveInvoiceNumberAndIBANInLocalStorage() {
@@ -159,7 +171,7 @@ function openAndChangeWorkItem() {
   domDescription.value = '';
 }
 containerForWorkItems.addEventListener('click', (e) => {
-  const elem = e.target;
+  const el = e.target;
   // console.log(typeof elem);
   // const templateWorkItem = elem.firstChild;
   //
