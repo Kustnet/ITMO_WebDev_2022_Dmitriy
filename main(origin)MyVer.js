@@ -171,14 +171,16 @@ function openAndChangeWorkItem() {
   domDescription.value = '';
 }
 containerForWorkItems.addEventListener('click', (e) => {
-  const el = e.target;
-  // console.log(typeof elem);
+  const selectedItem = e.target;
+  console.log(selectedItem);
   // const templateWorkItem = elem.firstChild;
   //
   // const total = templateWorkItem.lastChild;
   // console.log(total);
-  let elems = e.target.querySelector('#Cost');
-  console.log(elems);
+  let domCost = selectedItem.querySelector('.Cost');
+  domInputCost.value = domCost.innerHTML;
+  console.log(domCost.innerHTML);
+  popup.style.display = 'block';
 });
 
 // document.onclick = function (e) {
