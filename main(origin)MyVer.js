@@ -36,8 +36,8 @@ domTaxesInput.addEventListener('input', discountAndTaxes);
 containerForWorkItems.addEventListener('click', openAndChangeWorkItem);
 
 domInpInvoiceNumber.oninput = (event) => InputLimit(4, event.currentTarget);
-domInputQty.oninput = (event) => InputLimit(2, event.currentTarget);
-domInputCost.oninput = (event) => InputLimit(2, event.currentTarget);
+domDiscountInput.oninput = (event) => InputLimit(2, event.currentTarget);
+domTaxesInput.oninput = (event) => InputLimit(2, event.currentTarget);
 
 function InputLimit(num, input) {
   if (input.value.length > num) {
