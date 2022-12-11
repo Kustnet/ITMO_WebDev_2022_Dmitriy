@@ -19,6 +19,7 @@ const domResults = document.getElementById('resultsTotalContainer');
 const domInputIBAN = document.getElementById('inputIBANNumber');
 const containerForWorkItems = document.getElementById('tableWorkItems');
 const workItemTemplateSimpleCopy = containerForWorkItems.querySelector('#templateWorkItem');
+// let flag = true;
 
 popup.addEventListener('keyup', validateQtyCostDescription);
 domInpInvoiceNumber.addEventListener('input', saveInvoiceNumberAndIBANInLocalStorage);
@@ -29,7 +30,7 @@ domInputQty.addEventListener('input', totalItemAndSaveLocalStorage);
 domInputCost.addEventListener('input', totalItemAndSaveLocalStorage);
 domWorkItem.addEventListener('keyup', totalItemAndSaveLocalStorage);
 domDescription.addEventListener('keyup', totalItemAndSaveLocalStorage);
-domBtnCreate.addEventListener('click', addItemPopup);
+domBtnCreate.addEventListener('click', addWorkItem);
 domDiscountInput.addEventListener('input', discountAndTaxes);
 domTaxesInput.addEventListener('input', discountAndTaxes);
 containerForWorkItems.addEventListener('click', openAndChangeWorkItem);
@@ -58,6 +59,7 @@ function onBtnOpenAddWorkItem() {
   domWorkItem.value = '';
   domDescription.value = '';
   domTitleWorkItem.innerHTML = 'Add';
+  domBtnCreate.innerHTML = 'Create';
   domBtnDelete.disabled = true;
 }
 
@@ -122,7 +124,7 @@ function discountAndTaxes() {
   domResults.innerHTML = Number(discountResult) + Number(percentTax);
 }
 
-function addItemPopup() {
+function addWorkItem() {
   const simpleCopy = workItemTemplateSimpleCopy.cloneNode(true);
   document.getElementById('tableWorkItems').append(simpleCopy);
   // console.log(simpleCopy);
@@ -173,46 +175,67 @@ function openAndChangeWorkItem(e) {
   domDescription.value = domDes.innerHTML;
   popup.style.display = 'block';
   domTitleWorkItem.innerHTML = 'Update';
+  domBtnCreate.innerHTML = 'Save';
   domBtnDelete.disabled = false;
   domBtnDelete.onclick = () => {
-    let subtotalBef = domSubtotal.innerHTML;
-    console.log('domSubtotal.value', subtotalBef);
-    console.log('domItem.value', domItem.value);
-    let subtotal = Number(subtotalBef) - Number(domItem.value);
-    domSubtotal.innerHTML = subtotal;
-    localStorage.setItem('SubtotalEnd', subtotal);
-    domResults.innerHTML = subtotal;
-    discountAndTaxes();
-    selectedItem.remove();
+    const result = confirm('Are you sure you want to delete: ' + domWorkItem.value + ' ?');
+    if (result) {
+      let subtotalBef = domSubtotal.innerHTML;
+      console.log('domSubtotal.value', subtotalBef);
+      console.log('domItem.value', domItem.value);
+      let subtotal = Number(subtotalBef) - Number(domItem.value);
+      domSubtotal.innerHTML = subtotal;
+      localStorage.setItem('SubtotalEnd', subtotal);
+      domResults.innerHTML = subtotal;
+      discountAndTaxes();
+      selectedItem.remove();
+      domBtnClose.click();
+    }
+  };
+  if (
+    domWorkItem.value === domTitle.innerHTML &&
+    domInputQty.value === domQty.innerHTML &&
+    domInputCost.value === domCost.innerHTML
+  ) {
+    domBtnCreate.disabled = true;
+  } else {
+    domBtnCreate.disabled = false;
+  }
+  // let flag = false;
+  // createOrSaveWorkItem(flag, domTotal, domCost, domQty, domTitle, domDes);
+  domBtnCreate.onclick = () => {
+    domItem.value = domTotal.innerHTML;
+    domInputCost.value = domCost.innerHTML;
+    domInputQty.value = domQty.innerHTML;
+    domWorkItem.value = domTitle.innerHTML;
+    domDescription.value = domDes.innerHTML;
     domBtnClose.click();
   };
 }
 
-//     containerForWorkItems.addEventListener('click', (e) => {
-//   const selectedItem = e.target;
-//   let domCost = selectedItem.querySelector('.Cost');
-//   let domQty = selectedItem.querySelector('.Qty');
-//   let domTitle = selectedItem.querySelector('.title');
-//   let domDes = selectedItem.querySelector('.description');
-//   let domTotal = selectedItem.querySelector('.Total');
-//   domItem.value = domTotal.innerHTML;
-//   domInputCost.value = domCost.innerHTML;
-//   domInputQty.value = domQty.innerHTML;
-//   domWorkItem.value = domTitle.innerHTML;
-//   domDescription.value = domDes.innerHTML;
-//   popup.style.display = 'block';
-//   domTitleWorkItem.innerHTML = 'Update';
-//   domBtnDelete.disabled = false;
-//   domBtnDelete.onclick = () => {
-//     let subtotalBef = domSubtotal.innerHTML;
-//     console.log('domSubtotal.value', subtotalBef);
-//     console.log('domItem.value', domItem.value);
-//     let subtotal = Number(subtotalBef) - Number(domItem.value);
-//     domSubtotal.innerHTML = subtotal;
-//     localStorage.setItem('SubtotalEnd', subtotal);
-//     domResults.innerHTML = subtotal;
-//     discountAndTaxes();
-//     selectedItem.remove();
+// function createOrSaveWorkItem() {
+//   if (domTitleWorkItem.innerHTML = 'Update') {
+//     domBtnCreate.onclick = () => {
+//       domItem.value = domTotal.innerHTML;
+//       domInputCost.value = domCost.innerHTML;
+//       domInputQty.value = domQty.innerHTML;
+//       domWorkItem.value = domTitle.innerHTML;
+//       domDescription.value = domDes.innerHTML;
+//       domBtnClose.click();
+//     };
+//   } else {
+//     const simpleCopy = workItemTemplateSimpleCopy.cloneNode(true);
+//     document.getElementById('tableWorkItems').append(simpleCopy);
+//     // console.log(simpleCopy);
+//     simpleCopy.querySelector('.title').innerHTML = localStorage.getItem('domWorkItem');
+//     simpleCopy.querySelector('.description').innerHTML = localStorage.getItem('domDescription');
+//     simpleCopy.querySelector('.Qty').innerHTML = localStorage.getItem('domInputQty');
+//     simpleCopy.querySelector('.Cost').innerHTML = localStorage.getItem('domInputCost');
+//     simpleCopy.querySelector('.total').innerHTML = localStorage.getItem('domItemTotal');
+//     simpleCopy.style.display = '';
+//     subtotal();
 //     domBtnClose.click();
-//   };
-// });
+//     discountAndTaxes();
+//
+//   }
+// }
