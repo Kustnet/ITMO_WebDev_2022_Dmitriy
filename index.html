@@ -15,7 +15,11 @@
           <div class="absolute top-0 h-full w-full bg-gray-500/60" id="overlayWorkItemPopup"></div>
           <div class="relative h-104 bg-white px-12 py-6 flex flex-col" id="popupWorkItemContainerForm">
             <header class="flex flex-row justify-between">
-              <button class="text-red enabled:hover:font-bold disabled:text-gray-300" id="btnDeleteWorkItemPopup">
+              <button
+                disabled
+                class="text-red-400 enabled:hover:font-bold disabled:text-gray-300"
+                id="btnDeleteWorkItemPopup"
+              >
                 Delete
               </button>
               <button class="text-gray-400 hover:text-black" id="btnCloseWorkItemPopup">close</button>
@@ -171,7 +175,7 @@
                     </div>
                     <div class="Qty"></div>
                     <div class="Cost"></div>
-                    <div class="col-span-2 text-right pr-2, total" id="Total"></div>
+                    <div class="Total col-span-2 text-right pr-2, total" id="Total"></div>
                   </div>
                 </div>
               </div>

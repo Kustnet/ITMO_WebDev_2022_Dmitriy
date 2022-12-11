@@ -1,5 +1,7 @@
+const domTitleWorkItem = document.getElementById('titleWorkItemContainer');
 const domBtnPlus = document.getElementById('btnAddWorkItem');
 const domBtnClose = document.getElementById('btnCloseWorkItemPopup');
+const domBtnDelete = document.getElementById('btnDeleteWorkItemPopup');
 const popup = document.getElementById('popup');
 const domInpInvoiceNumber = document.getElementById('inputInvoiceNumber');
 const domInputQty = document.getElementById('inputWorkItemQty');
@@ -30,15 +32,7 @@ domDescription.addEventListener('keyup', totalItemAndSaveLocalStorage);
 domBtnCreate.addEventListener('click', addItemPopup);
 domDiscountInput.addEventListener('input', discountAndTaxes);
 domTaxesInput.addEventListener('input', discountAndTaxes);
-// containerForWorkItems.addEventListener('click', openAndChangeWorkItem);
-
-// применить функцию InputLimit к другим полям ввода с ограничением 2
-
-// domInpInvoiceNumber.oninput = function InputLimit() {
-//   if (this.value.length > 4) {
-//     this.value = this.value.slice(0, 4);
-//   }
-// };
+containerForWorkItems.addEventListener('click', openAndChangeWorkItem);
 
 domInpInvoiceNumber.oninput = (event) => InputLimit(4, event.currentTarget);
 domInputQty.oninput = (event) => InputLimit(2, event.currentTarget);
@@ -63,6 +57,8 @@ function onBtnOpenAddWorkItem() {
   domInputCost.value = '';
   domWorkItem.value = '';
   domDescription.value = '';
+  domTitleWorkItem.innerHTML = 'Add';
+  domBtnDelete.disabled = true;
 }
 
 function onBtnCloseAddWorkItem() {
@@ -163,26 +159,60 @@ function validateQtyCostDescription() {
   }
 }
 
-function openAndChangeWorkItem() {
-  popup.style.display = 'block';
-  domInputQty.value = this.value;
-  domInputCost.value = '';
-  domWorkItem.value = '';
-  domDescription.value = '';
-}
-containerForWorkItems.addEventListener('click', (e) => {
+function openAndChangeWorkItem(e) {
   const selectedItem = e.target;
-  console.log(selectedItem);
-  // const templateWorkItem = elem.firstChild;
-  //
-  // const total = templateWorkItem.lastChild;
-  // console.log(total);
   let domCost = selectedItem.querySelector('.Cost');
+  let domQty = selectedItem.querySelector('.Qty');
+  let domTitle = selectedItem.querySelector('.title');
+  let domDes = selectedItem.querySelector('.description');
+  let domTotal = selectedItem.querySelector('.Total');
+  domItem.value = domTotal.innerHTML;
   domInputCost.value = domCost.innerHTML;
-  console.log(domCost.innerHTML);
+  domInputQty.value = domQty.innerHTML;
+  domWorkItem.value = domTitle.innerHTML;
+  domDescription.value = domDes.innerHTML;
   popup.style.display = 'block';
-});
+  domTitleWorkItem.innerHTML = 'Update';
+  domBtnDelete.disabled = false;
+  domBtnDelete.onclick = () => {
+    let subtotalBef = domSubtotal.innerHTML;
+    console.log('domSubtotal.value', subtotalBef);
+    console.log('domItem.value', domItem.value);
+    let subtotal = Number(subtotalBef) - Number(domItem.value);
+    domSubtotal.innerHTML = subtotal;
+    localStorage.setItem('SubtotalEnd', subtotal);
+    domResults.innerHTML = subtotal;
+    discountAndTaxes();
+    selectedItem.remove();
+    domBtnClose.click();
+  };
+}
 
-// document.onclick = function (e) {
-//   if (e.target.tagName !== 'a') e.target.style.display = 'none';
-// };
+//     containerForWorkItems.addEventListener('click', (e) => {
+//   const selectedItem = e.target;
+//   let domCost = selectedItem.querySelector('.Cost');
+//   let domQty = selectedItem.querySelector('.Qty');
+//   let domTitle = selectedItem.querySelector('.title');
+//   let domDes = selectedItem.querySelector('.description');
+//   let domTotal = selectedItem.querySelector('.Total');
+//   domItem.value = domTotal.innerHTML;
+//   domInputCost.value = domCost.innerHTML;
+//   domInputQty.value = domQty.innerHTML;
+//   domWorkItem.value = domTitle.innerHTML;
+//   domDescription.value = domDes.innerHTML;
+//   popup.style.display = 'block';
+//   domTitleWorkItem.innerHTML = 'Update';
+//   domBtnDelete.disabled = false;
+//   domBtnDelete.onclick = () => {
+//     let subtotalBef = domSubtotal.innerHTML;
+//     console.log('domSubtotal.value', subtotalBef);
+//     console.log('domItem.value', domItem.value);
+//     let subtotal = Number(subtotalBef) - Number(domItem.value);
+//     domSubtotal.innerHTML = subtotal;
+//     localStorage.setItem('SubtotalEnd', subtotal);
+//     domResults.innerHTML = subtotal;
+//     discountAndTaxes();
+//     selectedItem.remove();
+//     domBtnClose.click();
+//   };
+// });
