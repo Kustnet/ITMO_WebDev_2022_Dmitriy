@@ -92,11 +92,11 @@ function subtotal() {
   let subtotal = domSubtotal.innerHTML;
   localStorage.setItem('Subtotal', subtotal);
   const subBefore = localStorage.getItem('Subtotal');
-  console.log('>subBefore>', subBefore);
+  // console.log('>subBefore>', subBefore);
   let total = localStorage.getItem('domItemTotal');
-  console.log('>total>', total);
+  // console.log('>total>', total);
   const subAfter = Number(subBefore) + Number(total);
-  console.log('>subAfter>', subAfter);
+  // console.log('>subAfter>', subAfter);
   domSubtotal.innerHTML = subAfter;
   localStorage.setItem('SubtotalEnd', subAfter);
 }
@@ -181,8 +181,8 @@ function openAndChangeWorkItem(e) {
     const result = confirm('Are you sure you want to delete: ' + domWorkItem.value + ' ?');
     if (result) {
       let subtotalBef = domSubtotal.innerHTML;
-      console.log('domSubtotal.value', subtotalBef);
-      console.log('domItem.value', domItem.value);
+      // console.log('domSubtotal.value', subtotalBef);
+      // console.log('domItem.value', domItem.value);
       let subtotal = Number(subtotalBef) - Number(domItem.value);
       domSubtotal.innerHTML = subtotal;
       localStorage.setItem('SubtotalEnd', subtotal);
@@ -210,6 +210,7 @@ function openAndChangeWorkItem(e) {
     domWorkItem.value = domTitle.innerHTML;
     domDescription.value = domDes.innerHTML;
     domBtnClose.click();
+    //
   };
 }
 
