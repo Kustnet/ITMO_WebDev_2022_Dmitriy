@@ -1,170 +1,3 @@
-import InvoiceVO from './Invoice/InvoiceVO.js';
-import WorkItemVO from './Invoice/WorkItemVO.js';
-
-const domBtnPlus = document.getElementById('btnAddWorkItem');
-const domBtnClose = document.getElementById('btnCloseWorkItemPopup');
-const popup = document.getElementById('popup');
-const domInpInvoiceNumber = document.getElementById('inputInvoiceNumber');
-const domInputQty = document.getElementById('inputWorkItemQty');
-const domInputCost = document.getElementById('inputWorkItemCost');
-const domItem = document.getElementById('workItemTotalContainer');
-const domWorkItem = document.getElementById('inputWorkItemTitle');
-const domDescription = document.getElementById('inputWorkItemDescription');
-const domBtnCreate = document.getElementById('btnCreateWorkItem');
-const domSubtotal = document.getElementById('resultsSubtotalContainer');
-const domDiscount = document.getElementById('resultsDiscountContainer');
-const domDiscountInput = document.getElementById('inputDiscountPercent');
-const domTaxes = document.getElementById('resultsTaxesContainer');
-const domTaxesInput = document.getElementById('inputTaxPercent');
-const domResults = document.getElementById('resultsTotalContainer');
-const domInputIBAN = document.getElementById('inputIBANNumber');
-const containerForWorkItems = document.getElementById('tableWorkItems');
-const workItemTemplateSimpleCopy = containerForWorkItems.querySelector('#templateWorkItem');
-
-const LOCAL_KEY_INVOICE = 'invoice';
-
-const invoiceVO = JSON.parse(localStorage.getItem(LOCAL_KEY_INVOICE)) || new InvoiceVO();
-let selectedWorkItemVO = null;
-
-domInpInvoiceNumber.addEventListener('input', () => {
-  invoiceVO.id = domInpInvoiceNumber.value;
-  saveInvoiceNumberAndIBANInLocalStorage();
-});
-domInputIBAN.addEventListener('input', () => {
-  saveInvoiceNumberAndIBANInLocalStorage();
-});
-domBtnPlus.addEventListener('click', onBtnOpenAddWorkItem);
-domBtnClose.addEventListener('click', onBtnCloseAddWorkItem);
-domInputQty.addEventListener('input', totalItemAndSaveLocalStorage);
-domInputCost.addEventListener('input', totalItemAndSaveLocalStorage);
-domWorkItem.addEventListener('keyup', totalItemAndSaveLocalStorage);
-domDescription.addEventListener('keyup', totalItemAndSaveLocalStorage);
-domBtnCreate.addEventListener('click', addItemPopup);
-domDiscountInput.addEventListener('input', discountAndTaxes);
-domTaxesInput.addEventListener('input', discountAndTaxes);
-// применить функцию InputLimit к другим полям ввода с ограничением 2
-domInpInvoiceNumber.oninput = function InputLimit() {
-  if (this.value.length > 4) {
-    this.value = this.value.slice(0, 4);
-  }
-};
-
-// Данные сохраняются в SessionStorage
-function saveInvoiceNumberAndIBANInLocalStorage() {
-  localStorage.setItem('invoice', JSON.stringify(invoiceVO));
-  //localStorage.setItem('domInvoiceNumber', domInpInvoiceNumber.value);
-  //localStorage.setItem('domIBAN', domInputIBAN.value);
-}
-
-const findWorkItemById = (id) => invoiceVO.items.find((vo) => vo.id === id);
-
-function onBtnOpenAddWorkItem(id) {
-  // selectedWorkItemVO = id ? findWorkItemById(id) : new WorkItemVO(Date.now().toString());
-  popup.style.display = 'block';
-  domInputQty.value = '';
-  domInputCost.value = '';
-  domWorkItem.value = '';
-  domDescription.value = '';
-}
-
-function onBtnCloseAddWorkItem() {
-  popup.style.display = 'none';
-}
-
-function totalItemAndSaveLocalStorage() {
-  const qty = domInputQty.value;
-  // console.log(typeof domInputQty.value, domInputQty.value);
-  localStorage.setItem('domInputQty', domInputQty.value);
-  const cost = domInputCost.value;
-  // console.log(typeof domInputCost.value, domInputCost.value);
-  localStorage.setItem('domInputCost', domInputCost.value);
-  localStorage.setItem('domWorkItem', domWorkItem.value);
-  localStorage.setItem('domDescription', domDescription.value);
-  localStorage.setItem('domDescription', domDescription.value);
-
-  if (!isNaN(qty || cost)) {
-    let total = qty * cost;
-    domItem.innerHTML = total;
-    // console.log('> Final total', total);
-    localStorage.setItem('domItemTotal', total);
-  } else {
-    alert('Нужно писать число!');
-  }
-}
-
-function subtotal() {
-  let subtotal = domSubtotal.innerHTML;
-  localStorage.setItem('Subtotal', subtotal);
-  const subBefore = localStorage.getItem('Subtotal');
-  console.log('>subBefore>', subBefore);
-  let total = localStorage.getItem('domItemTotal');
-  console.log('>total>', total);
-  const subAfter = Number(subBefore) + Number(total);
-  console.log('>subAfter>', subAfter);
-  domSubtotal.innerHTML = subAfter;
-  localStorage.setItem('SubtotalEnd', subAfter);
-}
-
-function discountAndTaxes() {
-  let result = localStorage.getItem('SubtotalEnd');
-  let discountResult = result;
-  domDiscount.innerHTML = discountResult;
-  const discount = Number(domDiscountInput.value);
-  console.log(typeof discount, discount);
-
-  if (discount > 0) {
-    let percentDis = Math.floor((result / 100) * discount);
-    // console.log('>percent>', percent);
-    discountResult = result - percentDis;
-    domDiscount.innerHTML = discountResult;
-    domResults.innerHTML = discountResult;
-  } else {
-    domDiscount.innerHTML = 0;
-    domResults.innerHTML = discountResult;
-  }
-  const taxes = domTaxesInput.value;
-  let percentTax = Math.floor((discountResult / 100) * taxes);
-  domTaxes.innerHTML = Math.ceil(percentTax);
-  domResults.innerHTML = Number(discountResult) + Number(percentTax);
-}
-
-function addItemPopup() {
-  const simpleCopy = workItemTemplateSimpleCopy.cloneNode(true);
-  document.getElementById('tableWorkItems').append(simpleCopy);
-  // console.log(simpleCopy);
-  invoiceVO.items.push(selectedWorkItemVO);
-
-  simpleCopy.id = selectedWorkItemVO.id;
-  simpleCopy.querySelector('.title').innerHTML = selectedWorkItemVO.title; //localStorage.getItem('domWorkItem');
-  simpleCopy.querySelector('.description').innerHTML = localStorage.getItem('domDescription');
-  simpleCopy.querySelector('.Qty').innerHTML = localStorage.getItem('domInputQty');
-  simpleCopy.querySelector('.Cost').innerHTML = localStorage.getItem('domInputCost');
-  simpleCopy.querySelector('.total').innerHTML = localStorage.getItem('domItemTotal');
-
-  selectedWorkItemVO = null;
-  subtotal();
-  domBtnClose.click();
-  discountAndTaxes();
-  saveInvoiceNumberAndIBANInLocalStorage();
-}
-// сохранение данных из инпута в storage---не работает с AddItem
-document.addEventListener('DOMContentLoaded', function () {
-  // событие загрузки страницы
-  // выбираем на странице все элементы типа textarea и input
-  document.querySelectorAll('textarea, input').forEach(function (e) {
-    // если данные значения уже записаны в sessionStorage, то вставляем их в поля формы
-    // путём этого мы как раз берём данные из памяти браузера, если страница была случайно перезагружена
-    if (e.value === '') e.value = window.sessionStorage.getItem(e.name, e.value);
-    // на событие ввода данных (включая вставку с помощью мыши) вешаем обработчик
-    e.addEventListener('input', function () {
-      // и записываем в sessionStorage данные, в качестве имени используя атрибут name поля элемента ввода
-      window.sessionStorage.setItem(e.name, e.value);
-    });
-  });
-});
-//
-//
-//Вариант кода с добавление слушателя по методике Лёни
 const domTitleWorkItem = document.getElementById('titleWorkItemContainer');
 const domBtnPlus = document.getElementById('btnAddWorkItem');
 const domBtnClose = document.getElementById('btnCloseWorkItemPopup');
@@ -184,9 +17,8 @@ const domTaxes = document.getElementById('resultsTaxesContainer');
 const domTaxesInput = document.getElementById('inputTaxPercent');
 const domResults = document.getElementById('resultsTotalContainer');
 const domInputIBAN = document.getElementById('inputIBANNumber');
-const containerForWorkItems = document.getElementById('tableWorkItems');
+let containerForWorkItems = document.getElementById('tableWorkItems');
 const workItemTemplateSimpleCopy = containerForWorkItems.querySelector('#templateWorkItem');
-// let flag = true;
 
 popup.addEventListener('keyup', validateQtyCostDescription);
 domInpInvoiceNumber.addEventListener('input', saveInvoiceNumberAndIBANInLocalStorage);
@@ -197,8 +29,7 @@ domInputQty.addEventListener('input', totalItemAndSaveLocalStorage);
 domInputCost.addEventListener('input', totalItemAndSaveLocalStorage);
 domWorkItem.addEventListener('keyup', totalItemAndSaveLocalStorage);
 domDescription.addEventListener('keyup', totalItemAndSaveLocalStorage);
-// domBtnCreate.addEventListener('click', addWorkItem);
-// domBtnCreate.onclick = addWorkItem();
+
 domDiscountInput.addEventListener('input', discountAndTaxes);
 domTaxesInput.addEventListener('input', discountAndTaxes);
 containerForWorkItems.addEventListener('click', openAndChangeWorkItem);
@@ -214,7 +45,6 @@ function InputLimit(num, input) {
   }
 }
 
-// Данные сохраняются в SessionStorage
 function saveInvoiceNumberAndIBANInLocalStorage() {
   localStorage.setItem('domInvoiceNumber', domInpInvoiceNumber.value);
   localStorage.setItem('domIBAN', domInputIBAN.value);
@@ -234,7 +64,6 @@ function onBtnOpenAddWorkItem() {
 
 function onBtnCloseAddWorkItem() {
   popup.style.display = 'none';
-  domBtnCreate.removeEventListener('click', addWorkItem);
 }
 
 function totalItemAndSaveLocalStorage() {
@@ -247,28 +76,32 @@ function totalItemAndSaveLocalStorage() {
   localStorage.setItem('domWorkItem', domWorkItem.value);
   localStorage.setItem('domDescription', domDescription.value);
   localStorage.setItem('domDescription', domDescription.value);
-
-  if (!isNaN(qty || cost)) {
-    let total = qty * cost;
-    domItem.innerHTML = total;
-    // console.log('> Final total', total);
-    localStorage.setItem('domItemTotal', total);
-  } else {
-    alert('Нужно писать число!');
-  }
+  let total = qty * cost;
+  domItem.innerHTML = total;
+  localStorage.setItem('domItemTotal', total);
 }
 
 function subtotal() {
   let subtotal = domSubtotal.innerHTML;
   localStorage.setItem('Subtotal', subtotal);
   const subBefore = localStorage.getItem('Subtotal');
-  console.log('>subBefore>', subBefore);
+  // console.log('>subBefore>', subBefore);
   let total = localStorage.getItem('domItemTotal');
-  console.log('>total>', total);
+  // console.log('>total>', total);
   const subAfter = Number(subBefore) + Number(total);
-  console.log('>subAfter>', subAfter);
+  // console.log('>subAfter>', subAfter);
   domSubtotal.innerHTML = subAfter;
   localStorage.setItem('SubtotalEnd', subAfter);
+}
+function subtotalMinus() {
+  let befofeSubtot = localStorage.getItem('SubtotalEnd');
+  let minusSubtot = localStorage.getItem('domItemTotalMinus');
+  let afterSubtot = Number(befofeSubtot) - Number(minusSubtot);
+  console.log('befofeSubtot', befofeSubtot);
+  console.log('afterSubtot', afterSubtot);
+  console.log('minusSubtot', minusSubtot);
+  localStorage.setItem('SubtotalEnd', afterSubtot);
+  domSubtotal.innerHTML = Number(afterSubtot);
 }
 
 function discountAndTaxes() {
@@ -280,7 +113,6 @@ function discountAndTaxes() {
 
   if (discount > 0) {
     let percentDis = Math.floor((result / 100) * discount);
-    // console.log('>percent>', percent);
     discountResult = result - percentDis;
     domDiscount.innerHTML = discountResult;
     domResults.innerHTML = discountResult;
@@ -307,18 +139,18 @@ function addWorkItem() {
   subtotal();
   domBtnClose.click();
   discountAndTaxes();
+  domBtnCreate.removeEventListener('click', addWorkItem);
+  saveWorkItemInLocalStorage();
 }
-// сохранение данных из инпута в storage---не работает с AddItem
+// сохраняю данные из инпута в storage
 document.addEventListener('DOMContentLoaded', function () {
-  // событие загрузки страницы
-  // выбираем на странице все элементы типа textarea и input
+  // выбираю на странице все элементы типа textarea и input
   document.querySelectorAll('textarea, input').forEach(function (e) {
-    // если данные значения уже записаны в sessionStorage, то вставляем их в поля формы
-    // путём этого мы как раз берём данные из памяти браузера, если страница была случайно перезагружена
+    // если данные значения уже записаны в sessionStorage, то вставляю их в поля формы
     if (e.value === '') e.value = window.sessionStorage.getItem(e.name, e.value);
-    // на событие ввода данных (включая вставку с помощью мыши) вешаем обработчик
+    // на событие ввода данных вешаю обработчик
     e.addEventListener('input', function () {
-      // и записываем в sessionStorage данные, в качестве имени используя атрибут name поля элемента ввода
+      // и записываю в sessionStorage данные, в качестве имени используя атрибут name поля элемента ввода
       window.sessionStorage.setItem(e.name, e.value);
     });
   });
@@ -332,27 +164,20 @@ function validateQtyCostDescription() {
 }
 
 function openAndChangeWorkItem(e) {
+  domBtnCreate.removeEventListener('click', addWorkItem);
   const selectedItem = e.target;
   let domCost = selectedItem.querySelector('.Cost');
   let domQty = selectedItem.querySelector('.Qty');
   let domTitle = selectedItem.querySelector('.title');
   let domDes = selectedItem.querySelector('.description');
   let domTotal = selectedItem.querySelector('.Total');
-  function SaveWorkItem() {
-    domItem.value = domTotal.innerHTML;
-    domInputCost.value = domCost.innerHTML;
-    domInputQty.value = domQty.innerHTML;
-    domWorkItem.value = domTitle.innerHTML;
-    domDescription.value = domDes.innerHTML;
-    console.log('domCost.innerHTML', domCost.innerHTML);
-    console.log('domInputCost.value', domInputCost.value);
-    domBtnClose.click();
-  }
-  domItem.innerHTML = domTotal.value;
-  domInputCost.innerHTML = domCost.value;
-  domInputQty.innerHTML = domQty.value;
-  domWorkItem.innerHTML = domTitle.value;
-  domDescription.innerHTML = domDes.value;
+
+  domItem.value = domTotal.innerHTML;
+  domInputCost.value = domCost.innerHTML;
+  domInputQty.value = domQty.innerHTML;
+  domWorkItem.value = domTitle.innerHTML;
+  domDescription.value = domDes.innerHTML;
+  localStorage.setItem('domItemTotalMinus', domItem.value);
   popup.style.display = 'block';
   domTitleWorkItem.innerHTML = 'Update';
   domBtnCreate.innerHTML = 'Save';
@@ -361,8 +186,8 @@ function openAndChangeWorkItem(e) {
     const result = confirm('Are you sure you want to delete: ' + domWorkItem.value + ' ?');
     if (result) {
       let subtotalBef = domSubtotal.innerHTML;
-      console.log('domSubtotal.value', subtotalBef);
-      console.log('domItem.value', domItem.value);
+      // console.log('domSubtotal.value', subtotalBef);
+      // console.log('domItem.value', domItem.value);
       let subtotal = Number(subtotalBef) - Number(domItem.value);
       domSubtotal.innerHTML = subtotal;
       localStorage.setItem('SubtotalEnd', subtotal);
@@ -381,28 +206,42 @@ function openAndChangeWorkItem(e) {
   } else {
     domBtnCreate.disabled = false;
   }
-  // let flag = false;
-  // createOrSaveWorkItem(flag, domTotal, domCost, domQty, domTitle, domDes);\
+  console.log('domCost.innerHTML', domCost.innerHTML);
+  console.log('domInputCost.value', domInputCost.value);
+  console.log('domCost.value', domCost.value);
+  console.log('domInputCost.innerHTML', domInputCost.innerHTML);
 
+  totalItemAndSaveLocalStorage();
   domBtnCreate.addEventListener('click', SaveWorkItem);
-  domBtnClose.addEventListener('click', () => {
+  function SaveWorkItem() {
+    domTotal.innerHTML = localStorage.getItem('domItemTotal');
+    domCost.innerHTML = localStorage.getItem('domInputCost');
+    domQty.innerHTML = localStorage.getItem('domInputQty');
+    domTitle.innerHTML = localStorage.getItem('domWorkItem');
+    domDes.innerHTML = localStorage.getItem('domDescription');
+    console.log('domCost.innerHTML', domCost.innerHTML);
+    console.log('domInputCost.value', domInputCost.value);
+    saveWorkItemInLocalStorage();
+    domBtnClose.click();
+    subtotal();
+    subtotalMinus();
+    discountAndTaxes();
     domBtnCreate.removeEventListener('click', SaveWorkItem);
-  });
+  }
 }
-
-//   } else {
-//     const simpleCopy = workItemTemplateSimpleCopy.cloneNode(true);
-//     document.getElementById('tableWorkItems').append(simpleCopy);
-//     // console.log(simpleCopy);
-//     simpleCopy.querySelector('.title').innerHTML = localStorage.getItem('domWorkItem');
-//     simpleCopy.querySelector('.description').innerHTML = localStorage.getItem('domDescription');
-//     simpleCopy.querySelector('.Qty').innerHTML = localStorage.getItem('domInputQty');
-//     simpleCopy.querySelector('.Cost').innerHTML = localStorage.getItem('domInputCost');
-//     simpleCopy.querySelector('.total').innerHTML = localStorage.getItem('domItemTotal');
-//     simpleCopy.style.display = '';
-//     subtotal();
-//     domBtnClose.click();
-//     discountAndTaxes();
-//
-//   }
-// }
+//Сохранение WorkItem после перезагрузки
+document.addEventListener('DOMContentLoaded', openWorkItemAfterReload);
+function saveWorkItemInLocalStorage() {
+  localStorage.setItem('containerForWorkItems', JSON.stringify(containerForWorkItems));
+}
+function openWorkItemAfterReload() {
+  let container = JSON.parse(localStorage.getItem('containerForWorkItems'));
+  console.log('type container', typeof container);
+  console.log('container', container);
+  let containerForWorkItems = document.getElementById('tableWorkItems');
+  console.log('containerForWorkItemsLength', containerForWorkItems.childNodes.length);
+  console.log('containerLength', container.childNodes.length);
+  if (container.childNodes.length > 3) {
+    containerForWorkItems.innerHTML = container;
+  }
+}
